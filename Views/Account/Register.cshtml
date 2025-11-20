@@ -1,0 +1,233 @@
+@model doan_ttcn.Models.ViewModels.RegisterViewModel
+@{
+  ViewBag.Title = "Đăng ký"; Layout = null;
+}
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Đăng nhập / Đăng ký - Bootstrap 5</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0"
+    rel="stylesheet" />
+
+  <style>
+    /* --- Custom CSS để khớp giao diện nông sản (Green Theme) --- */
+    body {
+      font-family: "Be Vietnam Pro", sans-serif;
+      background-color: #f6f8f6;
+      /* background-light cũ */
+      color: #333333;
+    }
+
+    /* Màu chủ đạo */
+    :root {
+      --primary-accent: #4caf50;
+      --primary-accent-dark: #388e3c;
+      --border-light: #d7e7cf;
+    }
+
+    .text-primary-custom {
+      color: var(--primary-accent) !important;
+    }
+
+    .btn-primary-custom {
+      background-color: var(--primary-accent);
+      border-color: var(--primary-accent);
+      color: white;
+    }
+
+    .btn-primary-custom:hover {
+      background-color: var(--primary-accent-dark);
+      border-color: var(--primary-accent-dark);
+      color: white;
+    }
+
+    /* Card layout */
+    .login-card {
+      border: none;
+      border-radius: 0.75rem;
+      /* rounded-xl */
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+        0 10px 10px -5px rgba(0, 0, 0, 0.04);
+      /* shadow-xl */
+      overflow: hidden;
+      background-color: #ffffff;
+    }
+
+    /* Image cột bên trái */
+    .bg-image-col {
+      background-image: url("/images/login.jpg");
+      background-size: cover;
+      background-position: center;
+      min-height: 100%;
+    }
+
+    /* Form Controls tùy chỉnh */
+    .form-control {
+      padding: 0.8rem 1rem;
+      border-color: var(--border-light);
+      border-radius: 0.5rem;
+      background-color: #ffffff;
+    }
+
+    .form-control:focus {
+      border-color: var(--primary-accent);
+      box-shadow: 0 0 0 0.25rem rgba(76, 175, 80, 0.25);
+    }
+
+    /* Toggle Switch (Login/Register tabs) */
+    .auth-toggle-container {
+      background-color: #f6f8f6;
+      padding: 0.25rem;
+      border-radius: 0.5rem;
+    }
+
+    .btn-check:checked+.btn-toggle {
+      background-color: #ffffff;
+      color: #333;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-toggle {
+      border: none;
+      color: #669a4c;
+      /* placeholder-light */
+      font-weight: 500;
+      border-radius: 0.375rem;
+    }
+
+    .btn-toggle:hover {
+      color: var(--primary-accent-dark);
+    }
+
+    /* Checkbox custom màu */
+    .form-check-input:checked {
+      background-color: var(--primary-accent);
+      border-color: var(--primary-accent);
+    }
+
+    /* Divider "Hoặc tiếp tục với" */
+    .divider-text {
+      color: #669a4c;
+      font-size: 0.875rem;
+    }
+
+    /* Responsive padding */
+    .form-wrapper {
+      padding: 2rem;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="d-flex min-vh-100 justify-content-center align-items-center py-4 px-3">
+    <div class="container" style="max-width: 1024px">
+      <div class="card login-card">
+        <div class="row g-0">
+          <div class="col-md-5 d-none d-md-block bg-image-col"></div>
+
+          <div class="col-md-7 col-12">
+            <div class="form-wrapper d-flex flex-column justify-content-center h-100">
+              <div class="d-flex align-items-center gap-5 mb-4">
+                <img src="/images/logo-bg.png" alt="Farm2Home logo" width="100" height="100"
+                  class="img-fluid rounded" />
+                <h2 class="fw-bold m-0 fs-4">Farm2Home</h2>
+              </div>
+
+              <h1 class="fw-bold mb-4" style="font-size: 32px">Chào mừng</h1>
+
+              <div class="auth-toggle-container d-flex mb-4">
+                <input type="radio" class="btn-check" name="auth-tab" id="tab-login" autocomplete="off" checked />
+                <label class="btn btn-toggle flex-fill" for="tab-login">Đăng ký</label>
+
+                <input type="radio" class="btn-check" name="auth-tab" id="tab-signup" autocomplete="off" />
+              </div>
+
+              <form asp-controller="Account" asp-action="Register" method="post">
+                @Html.AntiForgeryToken()
+                <div asp-validation-summary="ModelOnly" class="text-danger small mb-3"></div>
+                <div class="mb-3">
+                  <label asp-for="Email" class="form-label fw-medium">Email</label>
+                  <input asp-for="Email" type="email" class="form-control" id="email"
+                    placeholder="Nhập email của bạn" />
+                  <span asp-validation-for="Email" class="text-danger small"></span>
+                </div>
+
+                <div class="mb-3">
+                  <div class="d-flex justify-content-between align-items-baseline mb-2">
+                    <label asp-for="Password" class="form-label fw-medium m-0">Mật khẩu</label>
+                  </div>
+                  <div class="input-group">
+                    <input asp-for="Password" type="password" class="form-control border-end-0" id="password"
+                      placeholder="Nhập mật khẩu của bạn" />
+                    <span asp-validation-for="Password" class="text-danger small"></span>
+                    <span class="input-group-text bg-white border-start-0 text-muted cursor-pointer">
+                      <span class="material-symbols-outlined fs-5">visibility</span>
+                    </span>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <div class="d-flex justify-content-between align-items-baseline mb-2">
+                    <label asp-for="ConfirmPassword" class="form-label fw-medium m-0">Nhập lại mật khẩu</label>
+                  </div>
+                  <div class="input-group">
+                    <input asp-for="ConfirmPassword" type="password" class="form-control border-end-0" id="password"
+                      placeholder="Nhập mật khẩu của bạn" />
+
+                    <span class="input-group-text bg-white border-start-0 text-muted cursor-pointer">
+                      <span class="material-symbols-outlined fs-5">visibility</span><span
+                        asp-validation-for="ConfirmPassword" class="text-danger small"></span>
+                    </span>
+                  </div>
+                </div>
+
+
+                <div class="d-grid mb-4">
+                  <button type="submit" class="btn btn-primary-custom py-3 fw-bold">
+                    Đăng ký
+                  </button>
+                </div>
+              </form>
+
+              <div class="d-flex align-items-center gap-3 mb-4">
+                <hr class="flex-grow-1 my-0 text-muted" />
+                <span class="divider-text">Hoặc tiếp tục với</span>
+                <hr class="flex-grow-1 my-0 text-muted" />
+              </div>
+
+              <div class="row g-3 justify-content-center">
+                <div class="col-10 col-sm-6 col-md-5">
+                  <button
+                    class="btn btn-outline-secondary w-100 d-flex align-items-center justify-content-center gap-2 py-2"
+                    style="border-color: var(--border-light)">
+                    <img
+                      src="https://lh3.googleusercontent.com/aida-public/AB6AXuCY0lrnwjPBZ273SiCNSqjnXOifiGs1iGxi5oSiW6ORBBGFjm7WPn1cvC6YCE2pDUszW_QKpXAgt08G4HJddaEvHRcW4L7bOtGoCe9RMmJGZ-gkpegH9H-V3C9lUVdF-yi5Ld0PmSRwwU5BAnck_G1cxRal3aFH8hJjcgQ6KE-F0teRIrEi41yvpemsjNTixtistYTJQ_ZNOCJ5_qlpxB8tJDAj46nkEgH12JxYNyaPmFh4BGAFnU_rDxLH21YWjmUSerNUhdG07hk"
+                      alt="Google" width="24" height="24" />
+                    <span class="fw-medium">Google</span>
+                  </button>
+                </div>
+              </div>
+
+              <p class="text-center mt-4 mb-0 small">
+                Đã có tài khoản?
+                <a asp-controller="Account" asp-action="Login"
+                  class="text-primary-custom fw-bold text-decoration-none">Đăng nhập ngay</a>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

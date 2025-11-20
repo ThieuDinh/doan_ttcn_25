@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+
+<html class="light" lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Đăng nhập / Đăng ký</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;700&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+      rel="stylesheet"
+    />
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              primary: "#6cee2b",
+              "background-light": "#f6f8f6",
+              "background-dark": "#162210",
+              "primary-accent": "#4CAF50",
+              "primary-accent-dark": "#388E3C",
+              "text-light": "#333333",
+              "text-dark": "#E0E0E0",
+              "form-bg-light": "#FFFFFF",
+              "form-bg-dark": "#1a2a14",
+              "border-light": "#d7e7cf",
+              "border-dark": "#2a3f23",
+              "placeholder-light": "#669a4c",
+              "placeholder-dark": "#a5d6a7",
+            },
+            fontFamily: {
+              display: ["Be Vietnam Pro", "sans-serif"],
+            },
+            borderRadius: {
+              DEFAULT: "0.25rem",
+              lg: "0.5rem",
+              xl: "0.75rem",
+              full: "9999px",
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      .material-symbols-outlined {
+        font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+        font-size: 24px;
+      }
+    </style>
+  </head>
+  <body class="font-display">
+    <div
+      class="relative flex h-auto min-h-screen w-full flex-col bg-background-light dark:bg-background-dark group/design-root overflow-x-hidden"
+    >
+      <div class="layout-container flex h-full grow flex-col">
+        <div class="flex flex-1 justify-center items-center py-5 px-4 md:px-8">
+          <div
+            class="layout-content-container flex flex-col md:flex-row w-full max-w-5xl bg-form-bg-light dark:bg-form-bg-dark shadow-xl rounded-xl overflow-hidden"
+          >
+            <div
+              class="hidden md:flex md:w-2/5 w-full bg-center bg-no-repeat bg-cover aspect-auto"
+              data-alt="A vibrant basket full of fresh, green vegetables representing farm-to-table products."
+              style="
+                background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuB69xiMB4UL6IhPOfwEoraxb2qHjF4_hgOneFwbn3f9NDK4aJZnWRbdBYufjUvbXlK820tab_HABurHMc_W-i6dqmant4GaX5SL6k2FcKvVznZYgUZx5LzzqDt8dM_QNxEaGix_kyBYLKFsyO8_BLYe4gmnaikHE7Bcx3cqrgAfkp0PF4_2hfjWTzWiR46nQi4Wcmh3Wd0Gc8HNdTsP9VwqFKi9IJNFPBKU15PAnLu5HNpOSbs_sShQqJRPd2Egq1PQi_64wsHyThg');
+              "
+            ></div>
+            <div
+              class="w-full md:w-3/5 p-8 sm:p-12 flex flex-col justify-center"
+            >
+              <div class="flex items-center gap-2 mb-4">
+                <span
+                  class="material-symbols-outlined text-primary-accent-dark text-3xl"
+                  >eco</span
+                >
+                <h2
+                  class="font-display text-2xl font-bold text-text-light dark:text-text-dark"
+                >
+                  Nông Sản Sạch
+                </h2>
+              </div>
+              <h1
+                class="text-text-light dark:text-text-dark tracking-light text-[32px] font-bold leading-tight pb-3 pt-6"
+              >
+                Chào mừng trở lại
+              </h1>
+              <div class="flex py-3">
+                <div
+                  class="flex h-10 flex-1 items-center justify-center rounded-lg bg-background-light dark:bg-background-dark p-1"
+                >
+                  <label
+                    class="flex cursor-pointer h-full grow items-center justify-center overflow-hidden rounded-lg px-2 has-[:checked]:bg-form-bg-light has-[:checked]:dark:bg-form-bg-dark has-[:checked]:shadow-[0_0_4px_rgba(0,0,0,0.1)] has-[:checked]:text-text-light has-[:checked]:dark:text-text-dark text-placeholder-light dark:text-placeholder-dark text-sm font-medium leading-normal"
+                  >
+                    <span class="truncate">Đăng nhập</span>
+                    <input
+                      checked=""
+                      class="invisible w-0"
+                      name="auth-tab"
+                      type="radio"
+                      value="Log In"
+                    />
+                  </label>
+                  <label
+                    class="flex cursor-pointer h-full grow items-center justify-center overflow-hidden rounded-lg px-2 has-[:checked]:bg-form-bg-light has-[:checked]:dark:bg-form-bg-dark has-[:checked]:shadow-[0_0_4px_rgba(0,0,0,0.1)] has-[:checked]:text-text-light has-[:checked]:dark:text-text-dark text-placeholder-light dark:text-placeholder-dark text-sm font-medium leading-normal"
+                  >
+                    <span class="truncate">Đăng ký</span>
+                    <input
+                      class="invisible w-0"
+                      name="auth-tab"
+                      type="radio"
+                      value="Sign Up"
+                    />
+                  </label>
+                </div>
+              </div>
+              <div class="flex w-full flex-col gap-4 pt-4">
+                <label class="flex flex-col flex-1">
+                  <p
+                    class="text-text-light dark:text-text-dark text-base font-medium leading-normal pb-2"
+                  >
+                    Email
+                  </p>
+                  <input
+                    class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-light dark:text-text-dark focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-border-light dark:border-border-dark bg-form-bg-light dark:bg-form-bg-dark focus:border-primary-accent h-14 placeholder:text-placeholder-light dark:placeholder:text-placeholder-dark p-[15px] text-base font-normal leading-normal"
+                    placeholder="Nhập email của bạn"
+                    value=""
+                  />
+                </label>
+                <label class="flex flex-col flex-1">
+                  <div class="flex justify-between items-baseline pb-2">
+                    <p
+                      class="text-text-light dark:text-text-dark text-base font-medium leading-normal"
+                    >
+                      Mật khẩu
+                    </p>
+                    <a
+                      class="text-sm font-medium text-primary-accent hover:text-primary-accent-dark dark:hover:text-primary"
+                      href="#"
+                      >Quên mật khẩu?</a
+                    >
+                  </div>
+                  <div class="flex w-full flex-1 items-stretch rounded-lg">
+                    <input
+                      class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-light dark:text-text-dark focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-border-light dark:border-border-dark bg-form-bg-light dark:bg-form-bg-dark focus:border-primary-accent h-14 placeholder:text-placeholder-light dark:placeholder:text-placeholder-dark p-[15px] rounded-r-none border-r-0 pr-2 text-base font-normal leading-normal"
+                      placeholder="Nhập mật khẩu của bạn"
+                      type="password"
+                      value=""
+                    />
+                    <button
+                      class="text-placeholder-light dark:text-placeholder-dark flex border border-border-light dark:border-border-dark bg-form-bg-light dark:bg-form-bg-dark items-center justify-center px-4 rounded-r-lg border-l-0 hover:bg-background-light dark:hover:bg-background-dark focus:outline-none focus:ring-2 focus:ring-primary/50"
+                    >
+                      <span class="material-symbols-outlined">visibility</span>
+                    </button>
+                  </div>
+                </label>
+              </div>
+              <div class="flex items-center justify-between py-4">
+                <label class="flex items-center gap-2 cursor-pointer">
+                  <input
+                    class="form-checkbox h-4 w-4 rounded text-primary-accent focus:ring-primary-accent/50 border-border-light dark:border-border-dark bg-form-bg-light dark:bg-form-bg-dark"
+                    type="checkbox"
+                  />
+                  <span class="text-sm text-text-light dark:text-text-dark"
+                    >Ghi nhớ đăng nhập</span
+                  >
+                </label>
+              </div>
+              <button
+                class="flex w-full items-center justify-center rounded-lg h-14 px-6 text-base font-bold leading-normal text-white bg-primary-accent hover:bg-primary-accent-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-accent dark:focus:ring-offset-background-dark"
+              >
+                Đăng nhập
+              </button>
+              <div class="flex items-center gap-4 py-6">
+                <hr
+                  class="flex-grow border-t border-border-light dark:border-border-dark"
+                />
+                <span
+                  class="text-sm text-placeholder-light dark:text-placeholder-dark"
+                  >Hoặc tiếp tục với</span
+                >
+                <hr
+                  class="flex-grow border-t border-border-light dark:border-border-dark"
+                />
+              </div>
+              <div class="flex flex-col sm:flex-row gap-4">
+                <button
+                  class="flex-1 flex items-center justify-center gap-3 rounded-lg h-12 px-6 text-base font-medium leading-normal text-text-light dark:text-text-dark bg-transparent border border-border-light dark:border-border-dark hover:bg-background-light dark:hover:bg-background-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400 dark:focus:ring-offset-background-dark"
+                >
+                  <img
+                    alt="Google logo"
+                    class="h-6 w-6"
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuCY0lrnwjPBZ273SiCNSqjnXOifiGs1iGxi5oSiW6ORBBGFjm7WPn1cvC6YCE2pDUszW_QKpXAgt08G4HJddaEvHRcW4L7bOtGoCe9RMmJGZ-gkpegH9H-V3C9lUVdF-yi5Ld0PmSRwwU5BAnck_G1cxRal3aFH8hJjcgQ6KE-F0teRIrEi41yvpemsjNTixtistYTJQ_ZNOCJ5_qlpxB8tJDAj46nkEgH12JxYNyaPmFh4BGAFnU_rDxLH21YWjmUSerNUhdG07hk"
+                  />
+                  <span>Google</span>
+                </button>
+                <button
+                  class="flex-1 flex items-center justify-center gap-3 rounded-lg h-12 px-6 text-base font-medium leading-normal text-text-light dark:text-text-dark bg-transparent border border-border-light dark:border-border-dark hover:bg-background-light dark:hover:bg-background-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400 dark:focus:ring-offset-background-dark"
+                >
+                  <img
+                    alt="Facebook logo"
+                    class="h-6 w-6"
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuD_ZBSVljG62CwpsPOZnqUbxtFKTD7MCx3895xaAl4B91EMbt2bVSYzJVn9dMbGyLN3V8vR-SbL2JYg191sL3w2sZ_vu-gCrcDtS_waxigHNdcRtxBC8hQplunbihPByexSuXfBmpEgPpODUU5sgYERJcTQxCbM_wEDH9dmZYBZn7kMFygDogvy3dYa9gydMAzp5-DmMzO9nkYBmv0kbV_1SGqs5OvrMaKaoPDRmgPS6b9J1jcr1K-jPc6doncANsNVEh-yv5bYrbE"
+                  />
+                  <span>Facebook</span>
+                </button>
+              </div>
+              <p
+                class="text-center text-sm text-text-light dark:text-text-dark mt-8"
+              >
+                Chưa có tài khoản?
+                <a
+                  class="font-bold text-primary-accent hover:underline"
+                  href="#"
+                  >Đăng ký ngay</a
+                >
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
