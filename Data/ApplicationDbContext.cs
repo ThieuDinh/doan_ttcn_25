@@ -18,5 +18,9 @@ namespace doan_ttcn.Data
         public DbSet<doan_ttcn.Models.Category> Categories { get; set; } = default!;
 
         public DbSet<doan_ttcn.Models.Product> Products { get; set; } = default!;
+        public DbSet<doan_ttcn.Models.ProductImage> ProductImages { get; set; } = default!;
+        public DbSet<doan_ttcn.Models.ProductBatch> ProductBatches { get; set; } = default!;
+        public DbSet<doan_ttcn.Models.Order> Orders { get; set; } = default!;
+        public DbSet<doan_ttcn.Models.OrderDetail> OrderDetails { get; set; } = default!;
     }
 }
