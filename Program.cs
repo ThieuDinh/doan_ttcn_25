@@ -11,7 +11,12 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
     .AddRoles<IdentityRole>() // Thêm dòng này để dùng được Role Admin
     .AddEntityFrameworkStores<ApplicationDbContext>();
-
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = "/Account/Login";      // Khi chưa đăng nhập, chuyển hướng về đây
+    options.LogoutPath = "/Account/Logout";    // Đường dẫn đăng xuất
+    options.AccessDeniedPath = "/Account/AccessDenied"; // Khi không đủ quyền (VD: Staff vào trang Admin)
+});
 builder.Services.AddControllersWithViews();
 
 

@@ -13,7 +13,7 @@ namespace doan_ttcn.Models
         [Column(TypeName = "nvarchar(500)")]
         public string Description { get; set; }
         [Required]
-        [Range(0, 2000000000)]
+        [Column(TypeName = "decimal(7,0)")]
         public decimal Price { get; set; }
         
         [Column(TypeName = "nvarchar(500)")]
