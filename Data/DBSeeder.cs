@@ -12,6 +12,7 @@ namespace doan_ttcn.Data
             var roleManager = service.GetService<RoleManager<IdentityRole>>();
 
             // 1. Tạo các Role (Vai trò) nếu chưa có
+           
             await roleManager.CreateAsync(new IdentityRole("Administrator"));
             await roleManager.CreateAsync(new IdentityRole("Manager"));
             await roleManager.CreateAsync(new IdentityRole("Staff"));
@@ -34,7 +35,11 @@ namespace doan_ttcn.Data
                 // Mật khẩu mặc định: Admin@123
                 await userManager.CreateAsync(adminUser, "Admin@123");
                 // Gán quyền Admin
-                await userManager.AddToRoleAsync(adminUser, "Admin");
+               // await userManager.AddToRoleAsync(adminUser, "Administrator");
+            }
+            else
+            {
+                await userManager.AddToRoleAsync(userInDb, "Administrator");
             }
         }
     }

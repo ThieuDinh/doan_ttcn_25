@@ -1,3 +1,4 @@
+using doan_ttcn.Models;
 using doan_ttcn.Models.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -9,13 +10,13 @@ namespace doan_ttcn.Controllers
     public class AccountController : Controller
     {
         // 1. Khai báo các dịch vụ Identity cần dùng
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
 
         // 2. Sử dụng Dependency Injection (DI) để nhận các dịch vụ
         public AccountController(
-            UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager)
+            UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -77,7 +78,7 @@ namespace doan_ttcn.Controllers
             if (ModelState.IsValid)
             {
                 // Tạo một IdentityUser mới
-                var user = new IdentityUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
 
                 // Dùng UserManager để tạo User và Hash mật khẩu
                 var result = await _userManager.CreateAsync(user, model.Password);

@@ -14,4 +14,10 @@ namespace doan_ttcn.Models
         InStore=1,
         Email=2
     }
+    public enum PaymentType
+    {
+        COD = 0,    
+        VnPay = 2,      
+        Cash = 3 
+    }
 }

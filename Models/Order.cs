@@ -22,21 +22,20 @@ namespace doan_ttcn.Models
         public decimal TotalAmount { get; set; } // Tổng tiền hàng
         [Column(TypeName = "decimal(9,0)")]
         public decimal DiscountAmount { get; set; } // Giảm giá
-        [Column(TypeName = "decimal(9,0)")]
-        
+        [Column(TypeName = "decimal(9,0)")]        
         public decimal FinalAmount { get; set; } // Khách phải trả
 
         // Trạng thái & Kênh
-        [Column(TypeName = "byte")]
+        [Column(TypeName = "int")]
         public OrderStatus Status { get; set; } = OrderStatus.Pending;
-        [Column(TypeName = "byte")]
+        [Column(TypeName = "int")]
         public OrderChannel Channel { get; set; } = OrderChannel.Website;
 
         // Liên kết User (Khách hàng)
 
         public string? CustomerId { get; set; }
         [ForeignKey("CustomerId")]
-        public IdentityUser? Customer { get; set; }
+        public ApplicationUser? Customer { get; set; }
 
         // Danh sách sản phẩm mua
         public ICollection<OrderDetail> OrderDetails { get; set; }
@@ -45,5 +44,6 @@ namespace doan_ttcn.Models
         // Thuộc tính điều hướng
         [ForeignKey("VoucherId")]
         public Voucher? Voucher { get; set; }
+        public PaymentType PaymentMethod { get; set; } = PaymentType.COD;
     }
 }

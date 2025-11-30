@@ -1,4 +1,5 @@
 using doan_ttcn.Data;
+using doan_ttcn.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
@@ -8,15 +9,28 @@ var connectionString = builder.Configuration.GetConnectionString("ApplicationDbC
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
-    .AddRoles<IdentityRole>() // Thêm dòng này để dùng được Role Admin
-    .AddEntityFrameworkStores<ApplicationDbContext>();
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options => 
+{
+    options.Password.RequireDigit = false; // Cấu hình pass dễ (để test)
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequireUppercase = false;
+    options.Password.RequiredLength = 6;
+})
+.AddEntityFrameworkStores<ApplicationDbContext>()
+.AddDefaultTokenProviders();
+
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.LoginPath = "/Account/Login";      // Khi chưa đăng nhập, chuyển hướng về đây
     options.LogoutPath = "/Account/Logout";    // Đường dẫn đăng xuất
     options.AccessDeniedPath = "/Account/AccessDenied"; // Khi không đủ quyền (VD: Staff vào trang Admin)
 });
+// Seed Roles và Admin User khi khởi động ứng dụng
+using (var scope = builder.Services.BuildServiceProvider().CreateScope())
+{
+    var services = scope.ServiceProvider;
+    await DbSeeder.SeedRolesAndAdminAsync(services);
+}
 builder.Services.AddControllersWithViews();
 
 
@@ -42,6 +56,10 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}")
     .WithStaticAssets();
 
-
-app.MapRazorPages();
+app.MapAreaControllerRoute(
+    name: "Admin",
+    areaName: "Admin",
+    pattern: "Admin/{controller=Dashboard}/{action=Index}/{id?}"
+).WithStaticAssets();
+//app.MapRazorPages();
 app.Run();

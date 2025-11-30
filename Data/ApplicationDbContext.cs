@@ -22,5 +22,7 @@ namespace doan_ttcn.Data
         public DbSet<doan_ttcn.Models.ProductBatch> ProductBatches { get; set; } = default!;
         public DbSet<doan_ttcn.Models.Order> Orders { get; set; } = default!;
         public DbSet<doan_ttcn.Models.OrderDetail> OrderDetails { get; set; } = default!;
+        public DbSet<doan_ttcn.Models.Cart> Carts { get; set; }
+        public DbSet<doan_ttcn.Models.CartItem> CartItems { get; set; }
     }
 }
