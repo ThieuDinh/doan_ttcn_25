@@ -11,8 +11,8 @@ using doan_ttcn.Data;
 
 namespace doan_ttcn.Controllers
 {
-    
-    [Authorize(Roles = "Admin")]
+    [Area("Admin")]
+    [Authorize(Roles = "Administrator,Manager")]
     public class CategoryController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -128,6 +128,7 @@ namespace doan_ttcn.Controllers
             }
 
             var category = await _context.Categories
+                .Include(c => c.Products)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (category == null)
             {
@@ -142,12 +143,21 @@ namespace doan_ttcn.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var category = await _context.Categories.FindAsync(id);
-            if (category != null)
+            var category = await _context.Categories
+         .Include(c => c.Products)
+         .FirstOrDefaultAsync(c => c.Id == id);
+
+            if (category == null) return NotFound();
+
+            // KIỂM TRA: Nếu có sản phẩm thì không cho xóa
+            if (category.Products != null && category.Products.Count > 0)
             {
-                _context.Categories.Remove(category);
+                // Gửi lỗi về View để hiển thị
+                ViewBag.ErrorMessage = "Không thể xóa danh mục này vì đang có " + category.Products.Count + " sản phẩm.";
+                return View("Delete", category); // Trả về trang xác nhận xóa kèm thông báo lỗi
             }
 
+            _context.Categories.Remove(category);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }

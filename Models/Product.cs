@@ -24,5 +24,7 @@ namespace doan_ttcn.Models
         public int CategoryId { get; set; }
         [ForeignKey("CategoryId")]
         public Category? Category { get; set; }
+        [Column(TypeName ="nvarchar(50)")]
+        public string CategoryName { get; set; }
     }
 }

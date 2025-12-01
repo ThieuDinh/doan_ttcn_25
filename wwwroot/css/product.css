@@ -1,0 +1,106 @@
+   body {
+        font-family: "Roboto", sans-serif;
+        background-color: #f7f7f7;
+        color: #333;
+      }
+      .font-display {
+        font-family: "Work Sans", sans-serif;
+      }
+      
+      /* Primary Color (Green) override for Bootstrap defaults */
+      .text-primary { color: #4CAF50 !important; }
+      .bg-primary { background-color: #4CAF50 !important; }
+      .btn-primary { 
+        background-color: #4CAF50; 
+        border-color: #4CAF50; 
+      }
+      .btn-primary:hover {
+        background-color: #43a047;
+        border-color: #43a047;
+      }
+
+      /* Top Bar */
+      .top-bar {
+        background-color: #343a40; /* bg-gray-700 equivalent */
+        color: white;
+        font-size: 0.75rem;
+      }
+
+      /* Navbar */
+      .navbar-brand {
+        font-family: "Work Sans", sans-serif;
+        font-weight: 700;
+        font-size: 1.5rem;
+        color: #333 !important;
+      }
+      .nav-link {
+        font-weight: 500;
+        color: #666;
+      }
+      .nav-link:hover {
+        color: #4CAF50 !important;
+      }
+
+      /* Product Card Hover Effect */
+      .product-card {
+        transition: all 0.3s ease;
+        border: 1px solid #e9ecef;
+        background: white;
+      }
+      .product-card:hover {
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        transform: translateY(-5px);
+      }
+      .product-img-wrapper {
+        position: relative;
+        overflow: hidden;
+      }
+      .product-img-wrapper img {
+        width: 100%;
+        height: 220px;
+        object-fit: cover;
+      }
+      .hover-overlay {
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: rgba(0,0,0,0.4);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: opacity 0.3s;
+      }
+      .product-card:hover .hover-overlay {
+        opacity: 1;
+      }
+      .add-to-cart-btn {
+        transform: translateY(20px);
+        transition: transform 0.3s;
+        opacity: 0;
+      }
+      .product-card:hover .add-to-cart-btn {
+        transform: translateY(0);
+        opacity: 1;
+      }
+
+      /* Sidebar Range Slider */
+      .custom-range {
+        width: 100%;
+      }
+      
+      /* Small List Items */
+      .small-product-img {
+        width: 64px;
+        height: 64px;
+        object-fit: cover;
+        border-radius: 4px;
+      }
+
+      /* Pagination */
+      .page-link {
+        color: #333;
+      }
+      .page-item.active .page-link {
+        background-color: #4CAF50;
+        border-color: #4CAF50;
+      }
