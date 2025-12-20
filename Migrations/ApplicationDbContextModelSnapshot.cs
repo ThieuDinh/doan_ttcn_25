@@ -391,7 +391,6 @@ namespace doan_ttcn.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("CategoryName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Description")
@@ -399,7 +398,6 @@ namespace doan_ttcn.Migrations
                         .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("ImageUrl")
-                        .IsRequired()
                         .HasColumnType("nvarchar(500)");
 
                     b.Property<bool>("IsActive")
@@ -428,10 +426,10 @@ namespace doan_ttcn.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("ExpireDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("date");
 
                     b.Property<DateTime>("ImportDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("date");
 
                     b.Property<int>("ProductId")
                         .HasColumnType("int");

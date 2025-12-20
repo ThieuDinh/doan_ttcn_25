@@ -5,8 +5,9 @@ namespace doan_ttcn.Models
     public class ProductBatch
     {
         public int Id { get; set; }
-        
+        [Column(TypeName = "date")] 
         public DateTime ImportDate { get; set; } = DateTime.Now;
+        [Column(TypeName = "date")] 
         public DateTime ExpireDate { get; set; } 
         [Column(TypeName = "int")]
         
@@ -15,6 +16,6 @@ namespace doan_ttcn.Models
         public int RemainingQuantity { get; set; }
 
         public int ProductId { get; set; }
-        public Product Product { get; set; }
+        public Product? Product { get; set; }
     }
 }

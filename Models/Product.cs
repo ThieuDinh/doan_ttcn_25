@@ -17,7 +17,7 @@ namespace doan_ttcn.Models
         public decimal Price { get; set; }
         
         [Column(TypeName = "nvarchar(500)")]
-        public string ImageUrl { get; set; }
+        public string? ImageUrl { get; set; }
 
         public bool IsActive { get; set; } = true;
         [Display(Name = "Danh mục")]
@@ -25,6 +25,6 @@ namespace doan_ttcn.Models
         [ForeignKey("CategoryId")]
         public Category? Category { get; set; }
         [Column(TypeName ="nvarchar(50)")]
-        public string CategoryName { get; set; }
+        public string? CategoryName { get; set; }
     }
 }

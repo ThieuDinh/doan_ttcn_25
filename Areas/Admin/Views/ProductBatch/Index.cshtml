@@ -12,6 +12,10 @@
 <table class="table">
     <thead>
         <tr>
+            <th>Image</th>
+            <th>
+                @Html.DisplayNameFor(model => model.Product)
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.ImportDate)
             </th>
@@ -24,36 +28,45 @@
             <th>
                 @Html.DisplayNameFor(model => model.RemainingQuantity)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Product)
-            </th>
+
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.ImportDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ExpireDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Quantity)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RemainingQuantity)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Product.Description)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+
+            <tr>
+                <td>
+                    @if (item.Product != null && !string.IsNullOrEmpty(item.Product.ImageUrl))
+                    {
+                        <img src="~/product/@item.Product.ImageUrl" alt="@item.Product.Name"
+                            style="width: 60px; height: 60px; object-fit: cover; border-radius: 4px;" />
+                    }
+                    
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Product.Name)
+                </td>
+                <td>
+                    @item.ImportDate.ToString("dd/MM/yyyy")
+                </td>
+                <td>
+                    @item.ExpireDate.ToString("dd/MM/yyyy")
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Quantity)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RemainingQuantity)
+                </td>
+
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

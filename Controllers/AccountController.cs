@@ -38,7 +38,7 @@ namespace doan_ttcn.Controllers
         public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
-            
+
             if (ModelState.IsValid)
             {
                 // Gọi dịch vụ Identity để xác thực User/Password
@@ -46,19 +46,19 @@ namespace doan_ttcn.Controllers
                     model.Email, // Identity sử dụng Username/Email để xác thực
                     model.Password,
                     model.RememberMe,
-                    lockoutOnFailure: true); 
+                    lockoutOnFailure: true);
 
                 if (result.Succeeded)
                 {
                     // Đăng nhập thành công: Chuyển hướng về trang chủ hoặc URL được yêu cầu
-                    return RedirectToLocal(returnUrl); 
+                    return RedirectToLocal(returnUrl);
                 }
 
                 // Nếu xác thực thất bại
                 ModelState.AddModelError(string.Empty, "Đăng nhập thất bại. Vui lòng kiểm tra lại Email và Mật khẩu.");
             }
             // Trả về View nếu ModelState không hợp lệ hoặc đăng nhập thất bại
-            return View(model); 
+            return View(model);
         }
 
         // --- HÀNH ĐỘNG ĐĂNG KÝ ---
@@ -86,11 +86,11 @@ namespace doan_ttcn.Controllers
                 if (result.Succeeded)
                 {
                     // Tùy chọn: Gán Role "User" (hoặc "Customer") mặc định cho User mới tạo
-                    // await _userManager.AddToRoleAsync(user, "User"); 
+                    await _userManager.AddToRoleAsync(user, "Customer");
 
                     // Đăng nhập User ngay lập tức và chuyển hướng
                     await _signInManager.SignInAsync(user, isPersistent: false);
-                    return RedirectToAction("Index", "Home"); 
+                    return RedirectToAction("Index", "Home");
                 }
 
                 // Nếu có lỗi khi tạo user (ví dụ: mật khẩu yếu)
@@ -129,5 +129,12 @@ namespace doan_ttcn.Controllers
                 return RedirectToAction("Index", "Home");
             }
         }
+        // public async Task<IActionResult> Infomation()
+        // {
+        //     var user = await _userManager.GetUserAsync(User);
+            
+
+            
+        // }
     }
 }

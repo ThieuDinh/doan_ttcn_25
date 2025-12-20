@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace doan_ttcn.Areas_Admin_Controllers
 {
-      [Area("Admin")]
+    [Area("Admin")]
     [Authorize(Roles = "Administrator,Manager")]
     public class ProductBatchController : Controller
     {
@@ -51,10 +51,19 @@ namespace doan_ttcn.Areas_Admin_Controllers
         // GET: ProductBatch/Create
         public IActionResult Create()
         {
-            ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Description");
+            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name");
+            ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Name");
             return View();
         }
-
+        [HttpGet]
+        public JsonResult GetProductsByCategory(int categoryId)
+        {
+            var products = _context.Products
+                                   .Where(p => p.CategoryId == categoryId)
+                                   .Select(p => new { id = p.Id, name = p.Name }) // Chỉ lấy Id và Tên
+                                   .ToList();
+            return Json(products);
+        }
         // POST: ProductBatch/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -64,6 +73,7 @@ namespace doan_ttcn.Areas_Admin_Controllers
         {
             if (ModelState.IsValid)
             {
+                productBatch.RemainingQuantity = productBatch.Quantity;
                 _context.Add(productBatch);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
