@@ -1,7 +1,7 @@
 // File: Models/ViewModels/AccountViewModels.cs
 using System.ComponentModel.DataAnnotations;
 
-namespace doan_ttcn.Models.ViewModels
+namespace doan_ttcn.ViewModels
 {
     public class LoginViewModel
     {

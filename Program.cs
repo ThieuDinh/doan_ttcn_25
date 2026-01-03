@@ -25,6 +25,14 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.LogoutPath = "/Account/Logout";    // Đường dẫn đăng xuất
     options.AccessDeniedPath = "/Account/AccessDenied"; // Khi không đủ quyền (VD: Staff vào trang Admin)
 });
+builder.Services.AddDistributedMemoryCache();
+
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromSeconds(3600*3);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
 // Seed Roles và Admin User khi khởi động ứng dụng
 using (var scope = builder.Services.BuildServiceProvider().CreateScope())
 {
@@ -48,7 +56,7 @@ app.UseHttpsRedirection();
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
-
+app.UseSession();
 app.MapStaticAssets();
 
 

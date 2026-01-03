@@ -504,7 +504,7 @@ namespace doan_ttcn.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Voucher");
+                    b.ToTable("Vouchers");
                 });
 
             modelBuilder.Entity("doan_ttcn.Models.ApplicationUser", b =>

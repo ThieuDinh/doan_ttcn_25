@@ -5,7 +5,8 @@
     <ul class="list-unstyled">
         @foreach (var category in Model)
         {
-            <li class="mb-2"><a href="#" class="text-secondary text-decoration-none hover-primary">@category.Name (@category.ProductCount)</a>
+            <li class="mb-2"><a asp-controller="Product" asp-action="Index" asp-route-id="@category.Id" class="text-secondary text-decoration-none hover-primary">@category.Name
+                    (@category.ProductCount)</a>
             </li>
         }
     </ul>

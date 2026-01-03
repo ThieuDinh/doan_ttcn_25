@@ -1,0 +1,105 @@
+/* --- 1. Variables & Global --- */
+@media (max-width: 992px) {
+    .page-header {
+        margin-top: 0;
+        padding-top: 6rem; 
+    }
+}
+
+
+
+
+.page-header .breadcrumb-item.active {
+    color: #4CAF50 !important; /* Màu xanh chủ đạo */
+}
+
+/* --- 2. Buttons (Nút bấm chung) --- */
+.btn {
+    font-weight: 600;
+    transition: .5s;
+}
+
+/* Nút viền vàng/xanh (Apply Coupon, Proceed Checkout) */
+.btn.border-secondary {
+    border-color: #e9ecef !important;
+    color: #4CAF50; /* Màu chữ xanh */
+}
+
+.btn.border-secondary:hover {
+    background: #4CAF50 !important;
+    color: #fff !important;
+}
+
+/* --- 3. Quantity Input (Nút tăng giảm số lượng) --- */
+.input-group.quantity {
+    display: flex;
+    align-items: center;
+}
+
+.input-group.quantity .form-control {
+    text-align: center;
+    border: 0;
+    background-color: transparent;
+    font-weight: 600;
+    color: #333;
+}
+
+/* Định nghĩa chung cho nút Tròn (Cộng, Trừ, Xóa) */
+.btn-minus, .btn-plus, .btn-remove {
+    width: 35px;
+    height: 35px;
+    padding: 0 !important; /* Bỏ padding mặc định của Bootstrap */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50% !important; /* Làm tròn */
+    background-color: #f4f6f8 !important; /* Màu nền xám nhạt */
+    border: 1px solid #ced4da !important;
+    color: #333;
+    transition: 0.3s;
+    margin: 0 auto; /* Căn giữa nếu cần */
+}
+
+.btn-minus:hover, .btn-plus:hover, .btn-remove:hover {
+    background-color: #4CAF50 !important; /* Hover ra màu xanh */
+    color: white !important;
+    border-color: #4CAF50 !important;
+}
+
+.btn-remove:hover i {
+    color: white !important; /* Đổi màu dấu X thành trắng khi hover */
+}
+.btn-cart-action {
+    border: 1px solid #ffb524 !important;  /* Màu viền vàng cam (giống template gốc) */
+    color: #81c408 !important;             /* Màu chữ xanh lá */
+    background-color: transparent !important;
+    font-weight: 600;
+    padding: 15px 30px !important;
+    border-radius: 50rem !important;       /* Bo tròn (Pill) */
+    text-transform: uppercase;             /* Chữ in hoa */
+    transition: 0.5s;
+}
+
+/* Hiệu ứng khi di chuột vào */
+.btn-cart-action:hover {
+    background-color: #81c408 !important;  /* Nền xanh */
+    color: #fff !important;                /* Chữ trắng */
+    border-color: #81c408 !important;
+}
+/* --- 4. Table Styles --- */
+.table thead th {
+    border-bottom: none;
+    font-weight: 600;
+    color: #333;
+    text-align: center;
+}
+
+.table tbody tr td, 
+.table tbody tr th {
+    vertical-align: middle;
+    text-align: center;
+}
+
+.table tbody tr th {
+    text-align: left; /* Cột tên sản phẩm căn trái */
+}

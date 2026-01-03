@@ -1,4 +1,5 @@
 @using Microsoft.AspNetCore.Identity
+@using doan_ttcn.Helpers
 
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
@@ -21,17 +22,17 @@
 
    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0"
       rel="stylesheet" />
-   <link rel="stylesheet" href="css/bootstrap.min.css">
+   <link rel="stylesheet" href="~/css/bootstrap.min.css">
    <!-- style css -->
-   <link rel="stylesheet" href="css/style.css">
+   <link rel="stylesheet" href="~/css/style.css">
    <!-- Responsive-->
-   <link rel="stylesheet" href="css/responsive.css">
+   <link rel="stylesheet" href="~/css/responsive.css">
    <!-- fevicon -->
    <link rel="icon" href="images/fevicon.png" type="image/gif" />
    <!-- Tweaks for older IEs-->
-   <link rel="stylesheet" href="css/owl.carousel.min.css">
+   <link rel="stylesheet" href="~/css/owl.carousel.min.css">
    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
-   <link rel="stylesheet" href="css/bootstrap-datepicker.min.css">
+   <link rel="stylesheet" href="~/css/bootstrap-datepicker.min.css">
    @await RenderSectionAsync("Styles", required: false)
 </head>
 
@@ -77,7 +78,7 @@
                         </a>
 
                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                           <a class="dropdown-item" asp-area="" asp-page="/Account/Manage/Index" title="Manage">
+                           <a class="dropdown-item" asp-controller="Account" asp-action="Index" title="Manage">
                               Thông tin cá nhân
                            </a>
                            @if (User.IsInRole("Administrator"))
@@ -108,9 +109,23 @@
                      </li>
                   }
 
-                  <li class="nav-item">
-                     <a href="#" class="nav-link text-dark">
+                  @{
+                     var cart = Context.Session.Get<List<CartItem>>("mycart");
+                     int cartCount = cart != null ? cart.Sum(x => x.Quantity) : 0;
+                  }
+
+                  <li class="nav-item position-relative"> <a asp-controller="Cart" asp-action="Index"
+                        class="nav-link text-dark">
                         <i class="fa fa-shopping-cart fa-2x"></i>
+
+                        @if (cartCount > 0)
+                        {
+                           <span class="position-absolute top-0 start-50 translate-middle badge rounded-pill bg-primary"
+                              style="font-size: 10px; top: 10px !important; left: 70% !important;">
+                              @cartCount
+                              <span class="visually-hidden"></span>
+                           </span>
+                        }
                      </a>
                   </li>
                </ul>
@@ -119,16 +134,19 @@
          </div>
       </div>
    </header>
-   <div style="min-height:900px;">
+   <div style="min-height:900px; padding-top: 100px;">
       @RenderBody()</div>
    @await Html.PartialAsync("_Footer")
    </div>
-   <script src="js/jquery.min.js"></script>
-   <script src="js/bootstrap.bundle.min.js"></script>
-   @* <script src="js/jquery-3.0.0.min.js"></script> *@
-   <script src="js/owl.carousel.min.js"></script>
-   <script src="js/bootstrap-datepicker.min.js"></script>
-   <script src="js/custom.js"></script>
+   <script src="~/js/jquery.min.js"></script>
+   <script src="~/js/bootstrap.bundle.min.js"></script>
+   @* <script src="~/js/jquery-3.0.0.min.js"></script> *@
+   <script src="~/js/owl.carousel.min.js"></script>
+   <script src="~/js/bootstrap-datepicker.min.js"></script>
+   <script src="~/js/custom.js"></script>
+   <script src="~/js/site.js"></script>
+
+   @await RenderSectionAsync("scripts", required: false)
 </body>
 
 </html>

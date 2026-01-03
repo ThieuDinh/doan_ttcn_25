@@ -1,0 +1,49 @@
+@model IEnumerable<doan_ttcn.Models.Voucher>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-area="Admin" asp-controller="Voucher" asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Code)
+            </th>
+            <th> @Html.DisplayNameFor(model => model.DiscountPecent)</th>
+            <th> @Html.DisplayNameFor(model => model.DícountMax)</th>
+             <th> @Html.DisplayNameFor(model => model.Quantity)</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Code)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DiscountPecent)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.DícountMax)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Quantity)
+                </td>
+                <td>
+                    
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

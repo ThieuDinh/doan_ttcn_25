@@ -1,0 +1,32 @@
+
+
+.font-display {
+  
+   font-family: "Be Vietnam Pro", sans-serif;
+}
+.auth-switch-wrapper {
+  background-color: #f8f9fa;
+  padding: 5px;
+  border-radius: 8px;
+  display: inline-flex;
+  width: 100%;
+  margin-bottom: 20px;
+}
+.auth-switch-btn {
+  flex: 1;
+  padding: 8px;
+  text-align: center;
+  border-radius: 6px;
+  text-decoration: none;
+  color: #666;
+  font-weight: 500;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+.auth-switch-btn.active {
+  background-color: #fff;
+  color: #333;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  font-weight: 700;
+}
+
