@@ -19,6 +19,7 @@ namespace doan_ttcn.ViewModels
 
     public class RegisterViewModel : LoginViewModel
     {
+        public string? FullName { get; set; }
         [DataType(DataType.Password)]
         [Display(Name = "Nhập lại mật khẩu")]
         [Compare("Password", ErrorMessage = "Mật khẩu và xác nhận mật khẩu không khớp.")]
