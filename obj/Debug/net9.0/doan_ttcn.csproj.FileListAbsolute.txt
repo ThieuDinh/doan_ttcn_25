@@ -2105,3 +2105,7 @@ C:\Dai Hoc\ASPNET CORE\doan_ttcn\obj\Debug\net9.0\compressed\e5tur5vb9x-dfptwxhf
 C:\Dai Hoc\ASPNET CORE\doan_ttcn\obj\Debug\net9.0\compressed\u2rurplyfa-gu0prstp1m.gz
 C:\Dai Hoc\ASPNET CORE\doan_ttcn\obj\Debug\net9.0\compressed\bjly6tc35o-9lpwd7sw0d.gz
 C:\Dai Hoc\ASPNET CORE\doan_ttcn\obj\Debug\net9.0\compressed\1we73tu5a1-f30hocqrgt.gz
+C:\Dai Hoc\ASPNET CORE\doan_ttcn\obj\Debug\net9.0\compressed\cqdps8stxf-ov1ltq9k9l.gz
+C:\Dai Hoc\ASPNET CORE\doan_ttcn\obj\Debug\net9.0\compressed\16gkda9gpe-yekvsnp0xd.gz
+C:\Dai Hoc\ASPNET CORE\doan_ttcn\obj\Debug\net9.0\compressed\c7y8o4499f-dd700vas2a.gz
+C:\Dai Hoc\ASPNET CORE\doan_ttcn\obj\Debug\net9.0\compressed\paw0ta7ota-bqmet60xo6.gz

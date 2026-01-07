@@ -15,5 +15,6 @@ namespace doan_ttcn.Models
 
         public int ProductId { get; set; }
         public Product Product { get; set; }
+        public bool IsReviewed { get; set; } = false;
     }
 }

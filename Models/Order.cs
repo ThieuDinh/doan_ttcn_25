@@ -45,5 +45,6 @@ namespace doan_ttcn.Models
         [ForeignKey("VoucherId")]
         public Voucher? Voucher { get; set; }
         public PaymentType PaymentMethod { get; set; } = PaymentType.COD;
+        public bool IsReviewed { get; set; } = false;
     }
 }

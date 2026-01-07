@@ -81,6 +81,9 @@
                            <a class="dropdown-item" asp-controller="Account" asp-action="Index" title="Manage">
                               Thông tin cá nhân
                            </a>
+                             <a class="dropdown-item" asp-controller="Order" asp-action="Index" >
+                              Đơn hàng của tôi
+                           </a>
                            @if (User.IsInRole("Administrator"))
                            {
                               <a class="dropdown-item" asp-area="Admin" asp-controller="Dashboard" asp-action="Index">

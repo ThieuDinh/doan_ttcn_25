@@ -2,6 +2,7 @@ using doan_ttcn.Data;
 using doan_ttcn.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using doan_ttcn.Helpers;
+using Microsoft.AspNetCore.Authorization;
 namespace doan_ttcn.Controllers;
 
 public class CartController : Controller
@@ -137,10 +138,22 @@ public class CartController : Controller
 
         return true;
     }
+    [Authorize]
     public IActionResult addToCart(int Id, int quantity = 1)
     {
+        var totalStock = _context.ProductBatches
+        .Where(b => b.ProductId == Id && b.ExpireDate >= DateTime.Now) // Chỉ lấy lô chưa hết hạn
+        .Sum(b => b.RemainingQuantity);
         var cart = CART;
         var item = cart.FirstOrDefault(x => x.ProductId == Id);
+        int currentQuantityInCart = item != null ? item.Quantity : 0;
+        int requestedQuantity = currentQuantityInCart + quantity;
+
+        if (requestedQuantity > totalStock)
+        {
+            TempData["Error"] = "Số lượng sản phẩm trong kho không đủ!";
+            return RedirectToAction("Index"); // Hoặc trả về trang chi tiết
+        }
         if (item == null)
         {
             var product = _context.Products.Find(Id);
@@ -184,15 +197,29 @@ public class CartController : Controller
     {
         var cart = CART;
         var item = cart.FirstOrDefault(x => x.ProductId == id);
+
         if (item != null)
         {
-            item.Quantity = quantity;
-            // Nếu số lượng giảm xuống 0 hoặc âm thì xóa luôn
-            if (item.Quantity <= 0)
+            var totalStock = _context.ProductBatches
+            .Where(b => b.ProductId == id && b.ExpireDate >= DateTime.Now)
+            .Sum(b => b.RemainingQuantity);
+
+            if (quantity > totalStock)
             {
-                cart.Remove(item);
+                TempData["Error"] = $"Kho chỉ còn {totalStock} sản phẩm!";
+                // Giữ nguyên số lượng cũ hoặc set bằng max kho
+                // return RedirectToAction("Index"); 
             }
-            HttpContext.Session.Set(cart_key, cart);
+            if (quantity <= totalStock)
+            {
+                item.Quantity = quantity;
+
+                if (item.Quantity <= 0)
+                {
+                    cart.Remove(item);
+                }
+                HttpContext.Session.Set(cart_key, cart);
+            }
         }
         return RedirectToAction("Index");
     }

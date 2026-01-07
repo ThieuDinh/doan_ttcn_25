@@ -9,7 +9,7 @@ using doan_ttcn.Data;
 using doan_ttcn.Models;
 using Microsoft.AspNetCore.Authorization;
 
-namespace doan_ttcn.Areas_Admin_Controllers
+namespace doan_ttcn.Areas.Admin.Controllers 
 {
     [Area("Admin")]
     [Authorize(Roles = "Administrator,Manager")]
@@ -22,94 +22,82 @@ namespace doan_ttcn.Areas_Admin_Controllers
             _context = context;
         }
 
-        // GET: ProductBatch
+ 
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.ProductBatches.Include(p => p.Product);
-            return View(await applicationDbContext.ToListAsync());
+            var products = await _context.Products
+                .Include(p => p.Category)
+                .ToListAsync();
+            return View(products);
         }
 
-        // GET: ProductBatch/Details/5
+      
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
-            var productBatch = await _context.ProductBatches
-                .Include(p => p.Product)
+            var product = await _context.Products
+                .Include(p => p.Category)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (productBatch == null)
-            {
-                return NotFound();
-            }
 
-            return View(productBatch);
+            if (product == null) return NotFound();
+
+            var batches = await _context.ProductBatches
+                .Where(b => b.ProductId == id)
+                .OrderBy(b => b.ExpireDate)
+                .ToListAsync();
+
+            ViewBag.Batches = batches;
+
+            return View(product);
         }
 
-        // GET: ProductBatch/Create
-        public IActionResult Create()
+        public IActionResult Create(int productId)
         {
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name");
-            ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Name");
-            return View();
+            var product = _context.Products.Find(productId);
+            if (product == null) return NotFound();
+
+            var batch = new ProductBatch { ProductId = productId };
+            ViewBag.ProductName = product.Name;
+
+            return View(batch);
         }
-        [HttpGet]
-        public JsonResult GetProductsByCategory(int categoryId)
-        {
-            var products = _context.Products
-                                   .Where(p => p.CategoryId == categoryId)
-                                   .Select(p => new { id = p.Id, name = p.Name }) // Chỉ lấy Id và Tên
-                                   .ToList();
-            return Json(products);
-        }
-        // POST: ProductBatch/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,ImportDate,ExpireDate,Quantity,RemainingQuantity,ProductId")] ProductBatch productBatch)
+        public async Task<IActionResult> Create(ProductBatch productBatch)
         {
             if (ModelState.IsValid)
             {
                 productBatch.RemainingQuantity = productBatch.Quantity;
                 _context.Add(productBatch);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                
+                return RedirectToAction(nameof(Details), new { id = productBatch.ProductId });
             }
-            ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Description", productBatch.ProductId);
+
+            var product = _context.Products.Find(productBatch.ProductId);
+            ViewBag.ProductName = product != null ? product.Name : "Unknown";
+
             return View(productBatch);
         }
 
-        // GET: ProductBatch/Edit/5
+        
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
             var productBatch = await _context.ProductBatches.FindAsync(id);
-            if (productBatch == null)
-            {
-                return NotFound();
-            }
-            ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Description", productBatch.ProductId);
+            if (productBatch == null) return NotFound();
+            
             return View(productBatch);
         }
 
-        // POST: ProductBatch/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,ImportDate,ExpireDate,Quantity,RemainingQuantity,ProductId")] ProductBatch productBatch)
+        public async Task<IActionResult> Edit(int id, ProductBatch productBatch)
         {
-            if (id != productBatch.Id)
-            {
-                return NotFound();
-            }
+            if (id != productBatch.Id) return NotFound();
 
             if (ModelState.IsValid)
             {
@@ -120,41 +108,28 @@ namespace doan_ttcn.Areas_Admin_Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ProductBatchExists(productBatch.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    if (!ProductBatchExists(productBatch.Id)) return NotFound();
+                    else throw;
                 }
-                return RedirectToAction(nameof(Index));
+                
+                return RedirectToAction(nameof(Details), new { id = productBatch.ProductId });
             }
-            ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Description", productBatch.ProductId);
             return View(productBatch);
         }
 
-        // GET: ProductBatch/Delete/5
+        
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
             var productBatch = await _context.ProductBatches
                 .Include(p => p.Product)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (productBatch == null)
-            {
-                return NotFound();
-            }
+            if (productBatch == null) return NotFound();
 
             return View(productBatch);
         }
 
-        // POST: ProductBatch/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -162,13 +137,16 @@ namespace doan_ttcn.Areas_Admin_Controllers
             var productBatch = await _context.ProductBatches.FindAsync(id);
             if (productBatch != null)
             {
+                int productId = productBatch.ProductId; 
                 _context.ProductBatches.Remove(productBatch);
-            }
+                await _context.SaveChangesAsync();
 
-            await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Details), new { id = productId });
+            }
             return RedirectToAction(nameof(Index));
         }
 
+     
         private bool ProductBatchExists(int id)
         {
             return _context.ProductBatches.Any(e => e.Id == id);

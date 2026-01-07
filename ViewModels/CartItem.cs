@@ -17,10 +17,9 @@ namespace doan_ttcn.ViewModels
         public decimal DiscountPercent { get; set; } = 0;
 
         // 3. Phí vận chuyển (Ví dụ cố định $3.00 hoặc 30.000đ như giao diện)
-        public decimal ShippingFee { get; set; } = 3; 
-
+       
         // 4. Tổng thanh toán cuối cùng = (Tổng hàng - Giảm giá + Ship)
-        public decimal GrandTotal => SubTotal - DiscountAmount + ShippingFee;
+        public decimal GrandTotal => SubTotal - DiscountAmount ;
 
         // 5. Các thông tin về Voucher để hiển thị ra View
         public string AppliedCouponCode { get; set; } = ""; // Mã đang áp dụng

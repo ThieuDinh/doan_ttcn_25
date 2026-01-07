@@ -17,7 +17,6 @@ namespace doan_ttcn.Models
     public enum PaymentType
     {
         COD = 0,    
-        VnPay = 2,      
-        Cash = 3 
+        Banking = 1
     }
 }

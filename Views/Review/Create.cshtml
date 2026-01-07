@@ -1,0 +1,142 @@
+@model doan_ttcn.ViewModels.ReviewVM
+@{
+    ViewData["Title"] = "Viết đánh giá";
+
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/review.css">
+}
+
+<div class="bg-light py-3 border-bottom mb-5">
+    <div class="container">
+        <h3 class="font-display font-weight-bold mb-0">Đánh giá sản phẩm</h3>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb bg-transparent p-0 mb-0 small">
+                <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index" class="text-secondary">Trang
+                        chủ</a></li>
+                <li class="breadcrumb-item"><a asp-controller="Order" asp-action="Index" class="text-secondary">Đơn
+                        hàng</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Viết đánh giá</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<div class="container pb-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-sm border-0">
+                <div class="card-body p-4">
+                    <form asp-action="SubmitReview" method="post">
+                        <input type="hidden" asp-for="ProductId" />
+                        <input type="hidden" asp-for="OrderId" />
+
+                        <input type="hidden" asp-for="Rating" id="ratingValue" value="5" />
+
+                        <div class="row">
+                            <div class="col-md-4 text-center mb-4 mb-md-0 border-right">
+                                <img src="~/product/@Model.ProductImage"
+                                    class="img-fluid rounded mb-3 product-review-img" alt="@Model.ProductName">
+                                <h6 class="font-weight-bold text-dark">@Model.ProductName</h6>
+                                <p class="text-muted small">Đơn hàng: #@Model.OrderId</p>
+                            </div>
+
+                            <div class="col-md-8 pl-md-4">
+                                <h5 class="font-weight-bold mb-3">Chất lượng sản phẩm thế nào?</h5>
+
+                                <div class="rating-widget mb-4">
+                                    <div class="stars-container">
+                                        <i class="fa fa-star star-icon active" data-value="1"></i>
+                                        <i class="fa fa-star star-icon active" data-value="2"></i>
+                                        <i class="fa fa-star star-icon active" data-value="3"></i>
+                                        <i class="fa fa-star star-icon active" data-value="4"></i>
+                                        <i class="fa fa-star star-icon active" data-value="5"></i>
+                                    </div>
+                                    <span class="rating-text text-warning font-weight-bold ml-3" id="ratingText">Tuyệt
+                                        vời</span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="font-weight-bold text-secondary small">Chia sẻ cảm nhận của
+                                        bạn</label>
+                                    <textarea asp-for="Content" class="form-control" rows="5"
+                                        placeholder="Hãy chia sẻ những điều bạn thích về sản phẩm này nhé..."></textarea>
+                                    <span asp-validation-for="Content" class="text-danger small"></span>
+                                </div>
+
+                                <div class="d-flex justify-content-between align-items-center mt-4">
+                                    <a asp-controller="Order" asp-action="Index"
+                                        class="text-secondary text-decoration-none small">
+                                        <i class="fa fa-arrow-left mr-1"></i> Quay lại
+                                    </a>
+                                    <button type="submit" class="btn btn-primary px-4 font-weight-bold shadow-sm">
+                                        Gửi đánh giá
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const stars = document.querySelectorAll('.star-icon');
+            const ratingInput = document.getElementById('ratingValue');
+            const ratingText = document.getElementById('ratingText');
+
+            const textMap = {
+                1: "Tệ",
+                2: "Không hài lòng",
+                3: "Bình thường",
+                4: "Hài lòng",
+                5: "Tuyệt vời"
+            };
+
+            stars.forEach(star => {
+                // Sự kiện khi di chuột vào (Hover Effect)
+                star.addEventListener('mouseover', function () {
+                    const val = parseInt(this.getAttribute('data-value'));
+                    highlightStars(val);
+                });
+
+                // Sự kiện khi bấm chọn
+                star.addEventListener('click', function () {
+                    const val = parseInt(this.getAttribute('data-value'));
+                    ratingInput.value = val; // Lưu vào hidden input
+                    ratingText.textContent = textMap[val];
+
+                    // Gán class 'selected' để giữ màu sau khi di chuột ra
+                    stars.forEach(s => s.classList.remove('selected'));
+                    for (let i = 0; i < val; i++) {
+                        stars[i].classList.add('selected');
+                    }
+                });
+            });
+
+            // Khi di chuột ra khỏi vùng sao, reset về trạng thái đã chọn (input value)
+            document.querySelector('.stars-container').addEventListener('mouseleave', function () {
+                const currentVal = parseInt(ratingInput.value);
+                highlightStars(currentVal);
+            });
+
+            function highlightStars(count) {
+                stars.forEach(s => {
+                    const val = parseInt(s.getAttribute('data-value'));
+                    if (val <= count) {
+                        s.classList.add('active');
+                    } else {
+                        s.classList.remove('active');
+                    }
+                });
+            }
+        });
+        const stars = document.querySelectorAll('.star-icon');
+    </script>
+
+}

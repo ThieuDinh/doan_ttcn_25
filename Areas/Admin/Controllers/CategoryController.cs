@@ -52,9 +52,6 @@ namespace doan_ttcn.Controllers
             return View();
         }
 
-        // POST: Category/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create( Category category)
@@ -84,12 +81,9 @@ namespace doan_ttcn.Controllers
             return View(category);
         }
 
-        // POST: Category/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] Category category)
+        public async Task<IActionResult> Edit(int id,Category category)
         {
             if (id != category.Id)
             {
@@ -149,12 +143,11 @@ namespace doan_ttcn.Controllers
 
             if (category == null) return NotFound();
 
-            // KIỂM TRA: Nếu có sản phẩm thì không cho xóa
             if (category.Products != null && category.Products.Count > 0)
             {
-                // Gửi lỗi về View để hiển thị
-                ViewBag.ErrorMessage = "Không thể xóa danh mục này vì đang có " + category.Products.Count + " sản phẩm.";
-                return View("Delete", category); // Trả về trang xác nhận xóa kèm thông báo lỗi
+             
+                ViewBag.ErrorMessage = "Không thể xóa danh mục này vì đang có " + category.Products.Count + " sản phẩm";
+                return View("Delete", category); 
             }
 
             _context.Categories.Remove(category);

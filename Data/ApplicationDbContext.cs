@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 namespace doan_ttcn.Data
 {
-    public class ApplicationDbContext : IdentityDbContext<IdentityUser>
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -25,5 +25,6 @@ namespace doan_ttcn.Data
         public DbSet<doan_ttcn.Models.Cart> Carts { get; set; }
         public DbSet<doan_ttcn.Models.CartItem> CartItems { get; set; }
         public DbSet<doan_ttcn.Models.Voucher> Vouchers { get; set; }
+        public DbSet<Review> Reviews { get; set; }
     }
 }

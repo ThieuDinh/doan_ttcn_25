@@ -1,120 +1,45 @@
 @model doan_ttcn.Models.ProductBatch
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Nhập lô hàng mới";
 }
 
-<h1>Create</h1>
-
-<h4>ProductBatch</h4>
+<h4>Nhập lô hàng mới cho: <span class="text-primary">@ViewBag.ProductName</span></h4>
 <hr />
+
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-6">
         <form asp-action="Create">
-            <div asp-validation-summary="All" class="text-danger"></div>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             
+            <input type="hidden" asp-for="ProductId" />
 
-            <div class="form-group ">
-                <label class="control-label">Category</label>
-                <select id="CategorySelect" class="form-control" asp-items="ViewBag.CategoryId">
-                    <option value="Category">-- Choose category --</option>
-                </select>
-            </div>
-
-            <div class="form-group ">
-                <label asp-for="ProductId" class="control-label">Product</label>
-                <select asp-for="ProductId" id="ProductSelect" class="form-control" disabled>
-                    <option value="Product">-- Choose category first --</option>
-                </select>
-                <span asp-validation-for="ProductId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ImportDate" class="control-label"></label>
-                <input asp-for="ImportDate" class="form-control" type="date"/>
+            <div class="form-group mb-3">
+                <label asp-for="ImportDate" class="control-label fw-bold">Ngày nhập</label>
+                <input asp-for="ImportDate" class="form-control" type="date" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
                 <span asp-validation-for="ImportDate" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="ExpireDate" class="control-label"></label>
-                <input asp-for="ExpireDate" class="form-control" type="date"/>
+
+            <div class="form-group mb-3">
+                <label asp-for="ExpireDate" class="control-label fw-bold">Hạn sử dụng</label>
+                <input asp-for="ExpireDate" class="form-control" type="date" />
                 <span asp-validation-for="ExpireDate" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Quantity" class="control-label"></label>
-                <input asp-for="Quantity" class="form-control" type="number"/>
+
+            <div class="form-group mb-3">
+                <label asp-for="Quantity" class="control-label fw-bold">Số lượng nhập</label>
+                <input asp-for="Quantity" class="form-control" type="number" min="1" />
                 <span asp-validation-for="Quantity" class="text-danger"></span>
             </div>
-           
 
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+            <div class="form-group mt-4">
+                <button type="submit" class="btn btn-success px-4">Lưu lô hàng</button>
+                <a asp-action="Details" asp-route-id="@Model.ProductId" class="btn btn-secondary">Hủy bỏ</a>
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
 @section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-
-    }
-    <script>
-    $(document).ready(function () {
-        console.log("Script đã chạy!"); // Kiểm tra 1: Xem script có chạy không
-
-        $("#CategorySelect").change(function () {
-            var categoryId = $(this).val();
-            var productSelect = $("#ProductSelect");
-
-            console.log("Bạn đã chọn Category ID: " + categoryId); // Kiểm tra 2
-
-            // Reset dropdown sản phẩm
-            productSelect.empty();
-            productSelect.append('<option value="">-- Đang tải... --</option>');
-            productSelect.prop("disabled", true);
-
-            if (categoryId) {
-                $.ajax({
-                    url: '/Admin/ProductBatch/GetProductsByCategory',
-                    type: "GET",
-                    data: { categoryId: categoryId },
-                    success: function (data) {
-                        console.log("Dữ liệu nhận được:", data); // Kiểm tra 3: Xem server trả về gì
-
-                        productSelect.empty();
-
-                        if (data && data.length > 0) {
-                            productSelect.append('<option value="">-- Chọn sản phẩm --</option>');
-                            $.each(data, function (i, item) {
-                                // Lưu ý: item.id và item.name viết thường do JSON trả về
-                                productSelect.append($('<option>', {
-                                    value: item.id,
-                                    text: item.name
-                                }));
-                            });
-                            // QUAN TRỌNG: Mở khóa ở đây
-                            productSelect.prop("disabled", false);
-                        } else {
-                            productSelect.append('<option value="">-- Danh mục này KHÔNG có sản phẩm --</option>');
-                            // Vẫn khóa nếu không có sản phẩm để chọn
-                        }
-                    },
-                    error: function (xhr, status, error) {
-                        // Nếu lỗi URL hoặc Server
-                        console.error("Lỗi AJAX:", error);
-                        alert("Lỗi gọi Server! Kiểm tra lại URL trong Console (F12).");
-                        productSelect.empty();
-                        productSelect.append('<option value="">-- Lỗi kết nối --</option>');
-                    }
-                });
-            } else {
-                productSelect.empty();
-                productSelect.append('<option value="">-- Vui lòng chọn danh mục trước --</option>');
-            }
-        });
-    });
-</script>
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
