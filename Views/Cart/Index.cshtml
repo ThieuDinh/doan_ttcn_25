@@ -61,12 +61,12 @@
             <table class="table">
                 <thead>
                     <tr>
-                        <th scope="col">Products</th>
-                        <th scope="col">Name</th>
-                        <th scope="col">Price</th>
-                        <th scope="col">Quantity</th>
-                        <th scope="col">Total</th>
-                        <th scope="col">Handle</th>
+                        <th scope="col">Ảnh</th>
+                        <th scope="col">Tên sản phẩm</th>
+                        <th scope="col">Giá</th>
+                        <th scope="col">Số lượng</th>
+                        <th scope="col">Tổng</th>
+                        <th scope="col">Xóa</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -127,7 +127,7 @@
         <div class="mt-5">
             <form asp-action="ApplyCoupon" method="post" class="d-flex align-items-center">
                 <input type="text" name="couponCode" class="border-0 border-bottom rounded me-5 py-3 mb-4"
-                    placeholder="Nhập mã giảm giá" value="@Model."> <button class="btn btn-cart-action"
+                    placeholder="Nhập mã giảm giá" value="@Model.AppliedCouponCode"> <button class="btn btn-cart-action"
                     type="submit">Áp dụng</button>
             </form>
 
@@ -176,7 +176,7 @@
                             </div>
                         }
 
-                       
+
                     </div>
 
                     <div class="py-4 mb-4 border-top border-bottom d-flex justify-content-between">
