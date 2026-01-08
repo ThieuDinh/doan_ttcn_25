@@ -2,6 +2,7 @@ using doan_ttcn.Models;
 using doan_ttcn.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
 using System.Threading.Tasks;
 
 // Đảm bảo namespace này khớp với thư mục Controllers của bạn
@@ -36,7 +37,7 @@ namespace doan_ttcn.Controllers
         
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
+        public async Task<IActionResult> Login(LoginVM model, string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
 
@@ -71,7 +72,7 @@ namespace doan_ttcn.Controllers
         // POST: /Account/Register
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(RegisterViewModel model)
+        public async Task<IActionResult> Register(RegisterVM model)
         {
             if (ModelState.IsValid)
             {
@@ -148,7 +149,7 @@ namespace doan_ttcn.Controllers
                 return RedirectToAction("Login");
             }
 
-            var model = new UserInfo
+            var model = new UserProfileVM
             {
                 UserId = user.Id,
                 Fullname = user.FullName,
@@ -161,7 +162,7 @@ namespace doan_ttcn.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> UpdateInfo(UserInfo model)
+        public async Task<IActionResult> UpdateInfo(UserProfileVM model)
         {
           
             ModelState.Remove("Password");
@@ -204,8 +205,8 @@ namespace doan_ttcn.Controllers
                 return RedirectToAction("Login");
             }
 
-        
-            var model = new UserInfo
+
+            var model = new UserProfileVM
             {
                 UserId = user.Id
             };
@@ -216,7 +217,7 @@ namespace doan_ttcn.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ChangePassword(UserInfo model)
+        public async Task<IActionResult> ChangePassword(UserProfileVM model)
         {
            
             ModelState.Remove("Fullname");
@@ -247,7 +248,6 @@ namespace doan_ttcn.Controllers
                     return RedirectToAction(nameof(Index));
                 }
 
-                // Nếu thất bại (sai pass cũ, pass mới yếu...)
                 foreach (var error in result.Errors)
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
@@ -263,8 +263,6 @@ namespace doan_ttcn.Controllers
                 model.PhoneNumber = currentUser.PhoneNumber;
                 model.UserId = currentUser.Id;
             }
-
-            // Trả về view Index kèm thông báo lỗi
             return View("ChangePassword", model);
         }
 

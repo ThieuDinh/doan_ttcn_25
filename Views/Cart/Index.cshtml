@@ -1,4 +1,4 @@
-@model doan_ttcn.ViewModels.CartViewModel
+@model doan_ttcn.ViewModels.CartVM
 
 
 @{
@@ -127,7 +127,7 @@
         <div class="mt-5">
             <form asp-action="ApplyCoupon" method="post" class="d-flex align-items-center">
                 <input type="text" name="couponCode" class="border-0 border-bottom rounded me-5 py-3 mb-4"
-                    placeholder="Nhập mã giảm giá" value="@Model.AppliedCouponCode"> <button class="btn btn-cart-action"
+                    placeholder="Nhập mã giảm giá" value="@Model."> <button class="btn btn-cart-action"
                     type="submit">Áp dụng</button>
             </form>
 

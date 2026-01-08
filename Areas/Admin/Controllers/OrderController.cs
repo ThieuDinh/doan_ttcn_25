@@ -83,6 +83,11 @@ namespace doan_ttcn.Areas.Admin.Controllers
             return RedirectToAction("Details", new { id = id });
         }
 
+        public async Task<IActionResult> Create()
+        {
+            ViewData["Products"] = new SelectList(_context.Products, "Id", "Name");
+            return View();
+        }
         [HttpPost]
         public async Task<IActionResult> Create(AdminCreateOrderVM model)
         {

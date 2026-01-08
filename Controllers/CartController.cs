@@ -1,8 +1,8 @@
 using doan_ttcn.Data;
-using doan_ttcn.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using doan_ttcn.Helpers;
 using Microsoft.AspNetCore.Authorization;
+using doan_ttcn.ViewModels;
 namespace doan_ttcn.Controllers;
 
 public class CartController : Controller
@@ -16,26 +16,22 @@ public class CartController : Controller
     }
     const string cart_key = "mycart";
 
-    public List<CartItem> CART => HttpContext.Session.Get<List<CartItem>>(cart_key) ?? new List<CartItem>();
+    public List<CartItemVM> CART => HttpContext.Session.Get<List<CartItemVM>>(cart_key) ?? new List<CartItemVM>();
     public IActionResult Index()
     {
         var cart = CART;
-
-        // Khởi tạo ViewModel thay vì chỉ truyền List
-        var viewModel = new CartViewModel
+        var viewModel = new CartVM
         {
             Items = cart
         };
-
-        // 1. Kiểm tra xem trong Session có lưu mã Voucher không
         var savedCoupon = HttpContext.Session.GetString(coupon_key);
         if (!string.IsNullOrEmpty(savedCoupon))
         {
-            // Nếu có, thực hiện tính toán lại (để số liệu luôn đúng khi thêm/bớt sp)
+        
             ApplyVoucherLogic(viewModel, savedCoupon);
         }
 
-        // 2. Lấy thông báo từ TempData (khi vừa submit form áp dụng/hủy)
+       
         if (TempData["CouponMessage"] != null)
         {
             viewModel.CouponMessage = TempData["CouponMessage"].ToString();
@@ -49,7 +45,7 @@ public class CartController : Controller
     public IActionResult ApplyCoupon(string couponCode)
     {
         var cart = CART;
-        var viewModel = new CartViewModel { Items = cart };
+        var viewModel = new CartVM { Items = cart };
 
         if (string.IsNullOrEmpty(couponCode))
         {
@@ -85,52 +81,43 @@ public class CartController : Controller
         TempData["CouponIsValid"] = true;
         return RedirectToAction("Index");
     }
-    private bool ApplyVoucherLogic(CartViewModel model, string code)
+    private bool ApplyVoucherLogic(CartVM model, string code)
     {
         var today = DateTime.Now;
 
-        // 1. Tìm voucher trong DB
         var voucher = _context.Vouchers.FirstOrDefault(v => v.Code == code);
 
-        // 2. Kiểm tra tồn tại và Active
         if (voucher == null || !voucher.IsActive)
         {
             model.CouponMessage = "Mã giảm giá không tồn tại hoặc đã bị khóa.";
             return false;
         }
-
-        // 3. Kiểm tra ngày hiệu lực
+     
         if (today < voucher.StartDate || today > voucher.EndDate)
         {
             model.CouponMessage = "Mã giảm giá chưa bắt đầu hoặc đã hết hạn.";
             return false;
         }
 
-        // 4. Kiểm tra số lượng
         if (voucher.Quantity <= 0)
         {
             model.CouponMessage = "Mã giảm giá đã hết lượt sử dụng.";
             return false;
         }
 
-        // 5. Kiểm tra giá trị đơn hàng tối thiểu (MinimumPrice)
         if (model.SubTotal < voucher.MinimumPrice)
         {
             model.CouponMessage = $"Đơn hàng phải từ {voucher.MinimumPrice.ToString("#,##0")}đ mới được dùng mã này.";
             return false;
         }
 
-        // 6. Tính toán mức giảm giá
-        // Công thức: SubTotal * % / 100
         decimal discount = model.SubTotal * voucher.DiscountPecent / 100;
 
-        // Kiểm tra mức giảm tối đa (DícountMax - theo tên biến trong Voucher.cs)
         if (discount > voucher.DícountMax)
         {
             discount = voucher.DícountMax;
         }
 
-        // Cập nhật kết quả vào ViewModel
         model.DiscountAmount = discount;
         model.DiscountPercent = voucher.DiscountPecent;
         model.AppliedCouponCode = code;
@@ -161,7 +148,7 @@ public class CartController : Controller
             {
                 return NotFound();
             }
-            item = new CartItem
+            item = new CartItemVM
             {
                 ProductId = product.Id,
                 ProductName = product.Name,
@@ -192,7 +179,7 @@ public class CartController : Controller
         return RedirectToAction("Index");
     }
 
-    // 2. Hàm cập nhật số lượng (dùng cho cả nút cộng và trừ)
+   
     public IActionResult UpdateQuantity(int id, int quantity)
     {
         var cart = CART;
@@ -207,8 +194,7 @@ public class CartController : Controller
             if (quantity > totalStock)
             {
                 TempData["Error"] = $"Kho chỉ còn {totalStock} sản phẩm!";
-                // Giữ nguyên số lượng cũ hoặc set bằng max kho
-                // return RedirectToAction("Index"); 
+            
             }
             if (quantity <= totalStock)
             {

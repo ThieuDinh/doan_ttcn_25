@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using doan_ttcn.Data; // Nhớ using namespace của DbContext
+using doan_ttcn.Data;
+using doan_ttcn.ViewModels; // Nhớ using namespace của DbContext
 
 namespace doan_ttcn.ViewComponents
 {
@@ -15,15 +16,14 @@ namespace doan_ttcn.ViewComponents
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            // Tự đi chợ lấy danh mục
-            var categories =  _context.Categories.Select(cate => new MenuCategory
+            var categories =  _context.Categories.Select(cate => new MenuCategoryVM
             {
                 Id = cate.Id,
                 Name = cate.Name,
                 ProductCount = cate.Products.Count()
             });
             
-            // Trả về View riêng của nó kèm dữ liệu
+        
             return View(categories);
         }
     }

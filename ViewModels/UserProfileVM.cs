@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace doan_ttcn.ViewModels
 {
-    public class UserInfo
+    public class UserProfileVM
     {
         public string UserId { get; set; }
         public string Fullname { get; set; }

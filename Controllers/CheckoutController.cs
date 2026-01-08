@@ -5,7 +5,7 @@ using doan_ttcn.Models;
 using doan_ttcn.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using CartItem = doan_ttcn.ViewModels.CartItem;
+
 
 namespace doan_ttcn.Controllers
 {
@@ -23,20 +23,16 @@ namespace doan_ttcn.Controllers
         const string cart_key = "mycart";
         const string coupon_key = "applied_coupon";
 
-        // GET: /Checkout
+    
         public IActionResult Index()
         {
-            // 1. Lấy giỏ hàng
-            var cart = HttpContext.Session.Get<List<CartItem>>(cart_key) ?? new List<CartItem>();
-            if (cart.Count == 0) return RedirectToAction("Index", "Cart"); // Giỏ trống thì đá về giỏ
+            var cart = HttpContext.Session.Get<List<CartItemVM>>(cart_key) ?? new List<CartItemVM>();
+            if (cart.Count == 0) return RedirectToAction("Index", "Cart"); 
 
-            // 2. Tính toán tiền (Copy logic từ CartController hoặc tách ra Service)
-            // Tạm thời tính nhanh để hiển thị
             var subTotal = cart.Sum(p => p.TotalPrice);
-            decimal shippingFee = 3; // Hoặc 30000 tùy đơn vị bạn dùng
+            decimal shippingFee = 0; 
             decimal discount = 0;
 
-            // Nếu có mã giảm giá thì tính lại (Logic đơn giản hóa để hiển thị)
             var couponCode = HttpContext.Session.GetString(coupon_key);
             if (!string.IsNullOrEmpty(couponCode))
             {
@@ -58,7 +54,8 @@ namespace doan_ttcn.Controllers
                 DiscountAmount = discount
             };
 
-            // 4. Nếu đã đăng nhập, tự điền thông tin User vào Form
+         
+         
             if (User.Identity.IsAuthenticated)
             {
                 var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -80,12 +77,12 @@ namespace doan_ttcn.Controllers
         public async Task<IActionResult> Checkout(CheckoutVM model)
         {
             // 1. Lấy giỏ hàng
-            var cart = HttpContext.Session.Get<List<CartItem>>(cart_key) ?? new List<CartItem>();
+            var cart = HttpContext.Session.Get<List<CartItemVM>>(cart_key) ?? new List<CartItemVM>();
             if (cart.Count == 0) return RedirectToAction("Index", "Cart");
 
-            // 2. Tính toán lại tiền (Backend calculation)
+          
             var subTotal = cart.Sum(p => p.TotalPrice);
-            decimal shippingFee = 30000; // Lưu ý: Đồng bộ phí ship với hàm Index
+            decimal shippingFee = 0;
             decimal discount = 0;
 
             var couponCode = HttpContext.Session.GetString(coupon_key);
@@ -101,17 +98,17 @@ namespace doan_ttcn.Controllers
             }
             decimal grandTotal = subTotal - discount + shippingFee;
 
-            // 3. Xử lý Lưu đơn hàng
+          
             if (ModelState.IsValid)
             {
-                // Nếu payment method là COD hoặc các phương thức khác
+              
                 if (model.PaymentMethod == "COD" || model.PaymentMethod == "Banking")
                 {
                     using (var transaction = _context.Database.BeginTransaction())
                     {
                         try
                         {
-                            // --- A. TRỪ KHO (Logic Batch FEFO) ---
+                           
                             foreach (var item in cart)
                             {
                                 var batches = _context.ProductBatches
@@ -152,8 +149,7 @@ namespace doan_ttcn.Controllers
                                 }
                             }
 
-                            // --- B. TẠO ĐƠN HÀNG (ORDER) ---
-                            // Đây là đoạn bạn bị thiếu trong code cũ
+                          
                             var order = new Order
                             {
                                 OrderDate = DateTime.Now,
@@ -174,10 +170,9 @@ namespace doan_ttcn.Controllers
                             };
 
                             _context.Orders.Add(order);
-                            await _context.SaveChangesAsync(); // Lưu để lấy OrderId
+                            await _context.SaveChangesAsync(); 
 
-                            // --- C. TẠO CHI TIẾT ĐƠN HÀNG (ORDER DETAIL) ---
-                            // Đoạn này bạn cũng bị thiếu
+                
                             foreach (var item in cart)
                             {
                                 var orderDetail = new OrderDetail
@@ -190,7 +185,7 @@ namespace doan_ttcn.Controllers
                                 _context.OrderDetails.Add(orderDetail);
                             }
 
-                            // Trừ số lượng Voucher nếu có
+                         
                             if (voucher != null)
                             {
                                 voucher.Quantity -= 1;
@@ -198,9 +193,9 @@ namespace doan_ttcn.Controllers
                             }
 
                             await _context.SaveChangesAsync();
-                            await transaction.CommitAsync(); // Xác nhận thành công
+                            await transaction.CommitAsync(); 
 
-                            // Xóa giỏ hàng và voucher khỏi session
+                          
                             HttpContext.Session.Remove(cart_key);
                             HttpContext.Session.Remove(coupon_key);
 
@@ -228,7 +223,7 @@ namespace doan_ttcn.Controllers
         {
             var order = _context.Orders.FirstOrDefault(o => o.Id == orderId);
 
-            // Nếu không tìm thấy (hoặc user gõ bừa URL), đá về trang chủ
+          
             if (order == null)
             {
                 return RedirectToAction("Index", "Home");

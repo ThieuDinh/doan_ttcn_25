@@ -34,15 +34,15 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true;
 });
 // Seed Roles và Admin User khi khởi động ứng dụng
+builder.Services.AddControllersWithViews();
+
+
+var app = builder.Build();
 using (var scope = builder.Services.BuildServiceProvider().CreateScope())
 {
     var services = scope.ServiceProvider;
     await DbSeeder.SeedRolesAndAdminAsync(services);
 }
-builder.Services.AddControllersWithViews();
-
-
-var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

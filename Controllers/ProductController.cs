@@ -23,7 +23,7 @@ public class ProductController : Controller
         {
             product = product.Where(p => p.CategoryId == id.Value);
         }
-        var result=product.Select(p => new ProductViewModels
+        var result=product.Select(p => new ProductVM
         {
             Id=p.Id,
             Name=p.Name,
@@ -61,7 +61,7 @@ public class ProductController : Controller
     {
         var products = _context.Products
             .Where(p => p.Name.Contains(query))
-            .Select(p => new ProductViewModels
+            .Select(p => new ProductVM
             {
                 Id = p.Id,
                 Name = p.Name,

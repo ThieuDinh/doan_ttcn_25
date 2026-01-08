@@ -65,11 +65,7 @@ namespace doan_ttcn.Controllers
                         batch.RemainingQuantity += item.Quantity;
                         _context.Update(batch);
                     }
-                    else
-                    {
-                        // Trường hợp hiếm: Không còn lô nào khả dụng (VD: lô cũ đã hết hạn hết)
-                        // Bạn có thể tạo lô mới hoặc Log lỗi
-                    }
+                  
                 }
                 order.Status = OrderStatus.Cancelled;
                 _context.Update(order);
