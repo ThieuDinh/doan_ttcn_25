@@ -60,6 +60,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcTWFuYWdlclVzZXJcRWRpdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Dai Hoc/ASPNET CORE/doan_ttcn/Areas/Admin/Views/ManagerUser/History.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcTWFuYWdlclVzZXJcSGlzdG9yeS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Dai Hoc/ASPNET CORE/doan_ttcn/Areas/Admin/Views/ManagerUser/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcTWFuYWdlclVzZXJcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 

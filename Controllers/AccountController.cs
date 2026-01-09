@@ -26,15 +26,15 @@ namespace doan_ttcn.Controllers
             _roleManager = roleManager;
         }
 
-       
+
         [HttpGet]
         public IActionResult Login(string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
-            return View(); 
+            return View();
         }
 
-        
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginVM model, string returnUrl = null)
@@ -43,30 +43,30 @@ namespace doan_ttcn.Controllers
 
             if (ModelState.IsValid)
             {
-               
+
                 var result = await _signInManager.PasswordSignInAsync(
-                    model.Email, 
+                    model.Email,
                     model.Password,
                     model.RememberMe,
                     lockoutOnFailure: true);
 
                 if (result.Succeeded)
                 {
-                    
+
                     return RedirectToLocal(returnUrl);
                 }
 
                 ModelState.AddModelError(string.Empty, "Đăng nhập thất bại. Vui lòng kiểm tra lại Email và Mật khẩu.");
             }
-         
+
             return View(model);
         }
 
-       
+
         [HttpGet]
         public IActionResult Register()
         {
-            return View(); 
+            return View();
         }
 
         // POST: /Account/Register
@@ -81,8 +81,8 @@ namespace doan_ttcn.Controllers
                 {
                     UserName = model.Email,
                     Email = model.Email,
-                    FullName = "", 
-                    Address = "", 
+                    FullName = "",
+                    Address = "",
                     PhoneNumber = ""
                 };
 
@@ -91,23 +91,23 @@ namespace doan_ttcn.Controllers
 
                 if (result.Succeeded)
                 {
-                  
+
                     if (!await _roleManager.RoleExistsAsync("Customer"))
                     {
-                        
+
                         await _roleManager.CreateAsync(new IdentityRole("Customer"));
                     }
 
-                    
+
                     await _userManager.AddToRoleAsync(user, "Customer");
 
-                  
+
 
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     return RedirectToAction("Index", "Home");
                 }
 
-              
+
                 foreach (var error in result.Errors)
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
@@ -117,7 +117,7 @@ namespace doan_ttcn.Controllers
             return View(model);
         }
 
-     
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()
@@ -127,7 +127,7 @@ namespace doan_ttcn.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        
+
         private IActionResult RedirectToLocal(string returnUrl)
         {
             if (Url.IsLocalUrl(returnUrl))
@@ -142,7 +142,7 @@ namespace doan_ttcn.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-           
+
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
@@ -155,7 +155,7 @@ namespace doan_ttcn.Controllers
                 Fullname = user.FullName,
                 Address = user.Address,
                 PhoneNumber = user.PhoneNumber,
-               
+
             };
 
             return View(model);
@@ -164,7 +164,7 @@ namespace doan_ttcn.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> UpdateInfo(UserProfileVM model)
         {
-          
+
             ModelState.Remove("Password");
             ModelState.Remove("NewPassword");
             ModelState.Remove("ConfirmPassword");
@@ -198,7 +198,7 @@ namespace doan_ttcn.Controllers
         [HttpGet]
         public async Task<IActionResult> ChangePassword()
         {
-        
+
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
@@ -211,7 +211,7 @@ namespace doan_ttcn.Controllers
                 UserId = user.Id
             };
 
-        
+
             return View(model);
         }
 
@@ -219,13 +219,13 @@ namespace doan_ttcn.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ChangePassword(UserProfileVM model)
         {
-           
+
             ModelState.Remove("Fullname");
             ModelState.Remove("Address");
             ModelState.Remove("PhoneNumber");
             ModelState.Remove("UserId");
 
-           
+
             if (model.NewPassword != model.ConfirmPassword)
             {
                 ModelState.AddModelError("ConfirmPassword", "Mật khẩu xác nhận không khớp.");
@@ -236,12 +236,12 @@ namespace doan_ttcn.Controllers
                 var user = await _userManager.GetUserAsync(User);
                 if (user == null) return RedirectToAction("Login");
 
-               
+
                 var result = await _userManager.ChangePasswordAsync(user, model.Password, model.NewPassword);
 
                 if (result.Succeeded)
                 {
-                    
+
                     await _signInManager.RefreshSignInAsync(user);
 
                     TempData["SuccessMessage"] = "Đổi mật khẩu thành công!";
@@ -254,7 +254,7 @@ namespace doan_ttcn.Controllers
                 }
             }
 
-            
+
             var currentUser = await _userManager.GetUserAsync(User);
             if (currentUser != null)
             {

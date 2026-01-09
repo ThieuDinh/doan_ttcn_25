@@ -13,13 +13,16 @@ namespace Areas.Admin.Controllers
     [Authorize(Roles = "Administrator")]
     public class ManagerUserController : Controller
     {
+        private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
 
-        public ManagerUserController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+
+        public ManagerUserController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, ApplicationDbContext context)
         {
             _userManager = userManager;
             _roleManager = roleManager;
+            _context = context;
         }
 
         // GET: Admin/ManagerUser
@@ -37,8 +40,9 @@ namespace Areas.Admin.Controllers
                     UserName = user.UserName,
                     Email = user.Email,
                     PhoneNumber = user.PhoneNumber,
-                    Role = string.Join(", ", roles), 
-                    IsLocked = user.LockoutEnd != null && user.LockoutEnd > DateTimeOffset.UtcNow
+                    Role = string.Join(", ", roles),
+                    IsLocked = user.LockoutEnd != null && user.LockoutEnd > DateTimeOffset.UtcNow,
+                    HasOrder = _context.Orders.Any(a => a.CustomerId == user.Id)
                 });
             }
             return View(userViewModels);
@@ -96,10 +100,10 @@ namespace Areas.Admin.Controllers
             var model = new ManagerUserVM
             {
                 Id = user.Id,
-                Email = user.Email, 
+                Email = user.Email,
                 UserName = user.UserName,
                 PhoneNumber = user.PhoneNumber,
-                Role = roles.FirstOrDefault() 
+                Role = roles.FirstOrDefault()
             };
 
             ViewBag.Roles = new SelectList(_roleManager.Roles, "Name", "Name", model.Role);
@@ -121,10 +125,10 @@ namespace Areas.Admin.Controllers
 
             if (ModelState.IsValid)
             {
-            
+
                 if (!string.IsNullOrEmpty(model.NewPassword))
                 {
-                  
+
                     var token = await _userManager.GeneratePasswordResetTokenAsync(user);
                     var resultPass = await _userManager.ResetPasswordAsync(user, token, model.NewPassword);
 
@@ -179,6 +183,15 @@ namespace Areas.Admin.Controllers
             await _userManager.SetLockoutEndDateAsync(user, DateTimeOffset.UtcNow);
 
             return RedirectToAction(nameof(Index));
+        }
+        public async Task<IActionResult> History(string id)
+        {
+
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null) return NotFound();
+
+            var orders = await _context.Orders.Where(a => a.CustomerId == user.Id).Include(a => a.OrderDetails).ToListAsync();
+            return View(orders);
         }
     }
 }

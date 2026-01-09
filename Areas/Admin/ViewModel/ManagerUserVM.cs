@@ -25,4 +25,5 @@ public class ManagerUserVM
 
 
     public List<SelectListItem>? Roles { get; set; }
+    public bool HasOrder { get; set; }
 }
