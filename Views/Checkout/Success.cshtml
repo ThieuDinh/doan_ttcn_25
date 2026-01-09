@@ -54,10 +54,10 @@
 
                     <div class="d-flex justify-content-center">
                         <a href="@Url.Action("Index", "Product")"
-                            class="btn btn-primary rounded-pill px-4 py-2 mr-3 font-weight-bold shadow-sm">
+                            class="btn btn-primary rounded-pill px-4 py-2 mr-3 font-weight-bold">
                             <i class="fa fa-shopping-bag mr-2"></i> Tiếp tục mua
                         </a>
-                        <a href="@Url.Action("Index", "Account")"
+                        <a href="@Url.Action("Detail", "Order", new { id = Model.OrderId })"
                             class="btn btn-outline-secondary rounded-pill px-4 py-2 font-weight-bold">
                             Xem đơn hàng
                         </a>

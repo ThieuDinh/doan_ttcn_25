@@ -1,0 +1,121 @@
+.mb-3 {
+    margin-bottom: 1rem !important;
+    font-weight: bold;
+    font-size: 30px;
+}
+.container-farm {
+    max-width: 100%;
+    margin: 0 ;
+    padding: 40px 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f9f9f9;
+}
+.farm-article {
+    max-width: 900px;
+    margin: 80px auto;
+    padding: 0 20px;
+    
+    color: #2c2c2c;
+}
+
+/* Header */
+.farm-header {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.farm-header h1 {
+    font-size: 42px;
+    letter-spacing: 1px;
+}
+
+.farm-subtitle {
+    font-size: 18px;
+    color: #666;
+    margin-top: 10px;
+}
+
+.farm-meta {
+    margin-top: 20px;
+    font-size: 14px;
+    color: #777;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+/* Hero image */
+.farm-hero img {
+    width: 100%;
+    border-radius: 12px;
+    margin-bottom: 10px;
+}
+
+.farm-hero figcaption {
+    text-align: center;
+    font-size: 13px;
+    color: #888;
+}
+
+/* Content */
+.farm-content p {
+    font-size: 17px;
+    line-height: 1.8;
+    margin-bottom: 22px;
+}
+
+.farm-content h3 {
+    font-size: 22px;
+    margin: 40px 0 20px;
+    padding-left: 15px;
+    border-left: 4px solid #7bbf7a;
+    color: #1f3d2b;
+}
+
+/* List */
+.farm-list {
+    padding-left: 20px;
+    margin-bottom: 30px;
+}
+
+.farm-list li {
+    margin-bottom: 10px;
+    font-size: 16px;
+}
+.farm-list li {
+    padding: 12px 16px;
+    margin-bottom: 10px;
+    font-size: 16px;
+
+    background: #ffffff;
+    border-radius: 6px;
+    cursor: pointer;
+
+    transition: all 0.2s ease;
+}
+
+.farm-list li:hover {
+    background: #7bbf7a;
+    color: #fff;
+    transform: translateX(4px);
+}
+
+.farm-list li:active {
+    transform: scale(0.98);
+}
+.farm-list li.active {
+    background: #1f3d2b;
+    color: #fff;
+    font-weight: 600;
+}
+
+/* Quote */
+blockquote {
+    margin: 40px 0;
+    padding: 20px 30px;
+    background: #f5f9f6;
+    border-left: 5px solid #7bbf7a;
+    font-style: italic;
+    color: #355e3b;
+}

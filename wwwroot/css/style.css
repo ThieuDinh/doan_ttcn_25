@@ -835,7 +835,7 @@ ul.email li i {
     padding-top: 90px;
 }
 
-.map-responsive {margin-top: 90px;}
+
 .main_form .form_control {
     padding: 0 20px;
     margin-bottom: 30px;
@@ -903,7 +903,7 @@ ul.email li i {
 /** footer **/
 
 .footer {
-    padding-top: 70px;
+    padding-top: 0px;
     background: #252525;
     text-align: center;
 }
