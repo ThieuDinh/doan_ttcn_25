@@ -1,0 +1,56 @@
+@model IEnumerable<doan_ttcn.Models.Order>
+
+@{
+    ViewData["Title"] = "Lich sử đăt hàng";
+}
+
+<h1>Lịch sử đăt hàng</h1>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id) </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.FinalAmount)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.Channel)
+            </th>
+
+
+            <th>
+                @Html.DisplayNameFor(model => model.PaymentMethod)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FinalAmount)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Channel)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PaymentMethod)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

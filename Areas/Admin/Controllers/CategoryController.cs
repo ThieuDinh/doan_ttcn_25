@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using doan_ttcn.Models;
 using Microsoft.AspNetCore.Authorization;
 using doan_ttcn.Data;
+using doan_ttcn.Areas.Admin.ViewModel;
 
 namespace doan_ttcn.Controllers
 {
@@ -38,12 +39,18 @@ namespace doan_ttcn.Controllers
 
             var category = await _context.Categories
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (category == null)
             {
                 return NotFound();
             }
-
-            return View(category);
+            var product = await _context.Products.Where(a => a.CategoryId == category.Id).ToListAsync();
+            var categoryDetailsVM = new CategoryDeatilsVM
+            {
+                category =  category,
+                products = product
+            };
+            return View(categoryDetailsVM);
         }
 
         // GET: Category/Create
@@ -54,7 +61,7 @@ namespace doan_ttcn.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create( Category category)
+        public async Task<IActionResult> Create(Category category)
         {
             if (ModelState.IsValid)
             {
@@ -83,7 +90,7 @@ namespace doan_ttcn.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id,Category category)
+        public async Task<IActionResult> Edit(int id, Category category)
         {
             if (id != category.Id)
             {
@@ -145,9 +152,9 @@ namespace doan_ttcn.Controllers
 
             if (category.Products != null && category.Products.Count > 0)
             {
-             
+
                 ViewBag.ErrorMessage = "Không thể xóa danh mục này vì đang có " + category.Products.Count + " sản phẩm";
-                return View("Delete", category); 
+                return View("Delete", category);
             }
 
             _context.Categories.Remove(category);
