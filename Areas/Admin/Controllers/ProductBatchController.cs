@@ -9,7 +9,7 @@ using doan_ttcn.Data;
 using doan_ttcn.Models;
 using Microsoft.AspNetCore.Authorization;
 
-namespace doan_ttcn.Areas.Admin.Controllers 
+namespace doan_ttcn.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Authorize(Roles = "Administrator,Manager")]
@@ -22,7 +22,7 @@ namespace doan_ttcn.Areas.Admin.Controllers
             _context = context;
         }
 
- 
+
         public async Task<IActionResult> Index()
         {
             var products = await _context.Products
@@ -31,7 +31,7 @@ namespace doan_ttcn.Areas.Admin.Controllers
             return View(products);
         }
 
-      
+
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null) return NotFound();
@@ -72,7 +72,7 @@ namespace doan_ttcn.Areas.Admin.Controllers
                 productBatch.RemainingQuantity = productBatch.Quantity;
                 _context.Add(productBatch);
                 await _context.SaveChangesAsync();
-                
+
                 return RedirectToAction(nameof(Details), new { id = productBatch.ProductId });
             }
 
@@ -82,14 +82,18 @@ namespace doan_ttcn.Areas.Admin.Controllers
             return View(productBatch);
         }
 
-        
+
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null) return NotFound();
 
             var productBatch = await _context.ProductBatches.FindAsync(id);
             if (productBatch == null) return NotFound();
-            
+
+           
+            var product = await _context.Products.FindAsync(productBatch.ProductId);
+            ViewBag.ProductName = product?.Name; 
+
             return View(productBatch);
         }
 
@@ -99,11 +103,30 @@ namespace doan_ttcn.Areas.Admin.Controllers
         {
             if (id != productBatch.Id) return NotFound();
 
+            
+            var batchInDb = await _context.ProductBatches.FindAsync(id);
+            if (batchInDb == null) return NotFound();
+
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(productBatch);
+                
+                    batchInDb.ImportDate = productBatch.ImportDate;
+                    batchInDb.ExpireDate = productBatch.ExpireDate;
+
+                    int quantityDifference = productBatch.Quantity - batchInDb.Quantity;
+
+                    batchInDb.Quantity = productBatch.Quantity;
+                    batchInDb.RemainingQuantity += quantityDifference;
+
+                    if (batchInDb.RemainingQuantity < 0)
+                    {
+                        ModelState.AddModelError("Quantity", $"Không thể giảm số lượng nhập xuống {productBatch.Quantity} vì đã bán quá số lượng này (Tồn kho sẽ bị âm).");
+                        return View(productBatch);
+                    }
+
+                    _context.Update(batchInDb);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -111,13 +134,13 @@ namespace doan_ttcn.Areas.Admin.Controllers
                     if (!ProductBatchExists(productBatch.Id)) return NotFound();
                     else throw;
                 }
-                
-                return RedirectToAction(nameof(Details), new { id = productBatch.ProductId });
+
+                return RedirectToAction(nameof(Details), new { id = batchInDb.ProductId });
             }
             return View(productBatch);
         }
 
-        
+
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null) return NotFound();
@@ -137,7 +160,7 @@ namespace doan_ttcn.Areas.Admin.Controllers
             var productBatch = await _context.ProductBatches.FindAsync(id);
             if (productBatch != null)
             {
-                int productId = productBatch.ProductId; 
+                int productId = productBatch.ProductId;
                 _context.ProductBatches.Remove(productBatch);
                 await _context.SaveChangesAsync();
 
@@ -146,7 +169,7 @@ namespace doan_ttcn.Areas.Admin.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-     
+
         private bool ProductBatchExists(int id)
         {
             return _context.ProductBatches.Any(e => e.Id == id);

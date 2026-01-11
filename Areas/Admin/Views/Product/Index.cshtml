@@ -1,31 +1,31 @@
 @model IEnumerable<doan_ttcn.Models.Product>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Quản lý sản phẩm";
 }
 
-<h1>Index</h1>
+<h1>Quản lý sản phẩm</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Thêm mới</a>
 </p>
 <table class="table">
     <thead>
         <tr>
             <th>
-                Image </th>
+                Ảnh </th>
             
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                Tên sản phẩm
             </th>
 
             <th>
-                @Html.DisplayNameFor(model => model.Price)
+                Giá
             </th>
 
           
             <th>
-                @Html.DisplayNameFor(model => model.Category)
+                Danh mục
             </th>
             <th></th>
         </tr>
@@ -42,7 +42,7 @@
                     }
                     else
                     {
-                        <span class="text-muted">No image</span>
+                        <span class="text-muted">Không có ảnh</span>
                     }
                 </td>
                 <td>

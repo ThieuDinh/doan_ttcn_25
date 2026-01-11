@@ -8,26 +8,26 @@
 <h1>Danh sách tài khoản</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Tạo mới</a>
 </p>
 
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Email) </th>
+                Email </th>
 
             <th>
-                @Html.DisplayNameFor(model => model.UserName)
+                Tên đăng nhập
             </th>
 
             <th>
-                @Html.DisplayNameFor(model => model.PhoneNumber)
+                Số điện thoại
             </th>
 
 
             <th>
-                @Html.DisplayNameFor(model => model.Roles)
+                Vai trò
             </th>
             <th></th>
         </tr>
@@ -56,14 +56,15 @@
                     <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>|
                     @if (item.IsLocked)
                     {
-                        <a asp-action="Unlock" asp-route-id="@item.Id">Unlock</a>
+                        <a asp-action="Unlock" asp-route-id="@item.Id">Unlock</a> 
                     }
                     else
                     {
                         <a asp-action="Lock" asp-route-id="@item.Id">Lock</a>
                     }
-                    @if (item.HasOrder){
-                        <a asp-action="History" asp-route-id="@item.Id">Lịch sử</a>
+                    @if (item.HasOrder)
+                    {
+                        <a asp-action="History" asp-route-id="@item.Id">| History</a>
                     }
                 </td>
             </tr>

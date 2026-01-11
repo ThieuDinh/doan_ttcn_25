@@ -1,12 +1,12 @@
 @model doan_ttcn.Models.Product
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Sửa sản phẩm";
 }
 
-<h1>Edit</h1>
+<h1>Sửa sản phẩm</h1>
 
-<h4>Product</h4>
+<h4>Sản phẩm</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -15,23 +15,23 @@
             <input type="hidden" asp-for="ImageUrl" />
             <input type="hidden" asp-for="Id" />
             <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
+                <label asp-for="Name" class="control-label">Tên sản phẩm</label>
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
+                <label asp-for="Description" class="control-label">Mô tả</label>
                 <input asp-for="Description" class="form-control" />
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Price" class="control-label"></label>
+                <label asp-for="Price" class="control-label">Giá</label>
                 <input asp-for="Price" class="form-control" />
                 <span asp-validation-for="Price" class="text-danger"></span>
             </div>
             
             <div class="form-group">
-                <label  class="control-label">Image</label>
+                <label  class="control-label">Ảnh</label>
                 <div class="mb-2">
                     @if (!string.IsNullOrEmpty(Model.ImageUrl))
                     {
@@ -39,17 +39,17 @@
                     }
                   
                 </div>
-                <label class="control-label">Choose image</label>
+                <label class="control-label">Ảnh</label>
                 <input type="file" name="imageFile" class="form-control" accept="image/*" />
               
             </div>
             <div class="form-group">
-                <label asp-for="CategoryId" class="control-label"></label>
+                <label asp-for="CategoryId" class="control-label">Danh mục</label>
                 <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.CategoryId"></select>
                 <span asp-validation-for="CategoryId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Lưu" class="btn btn-primary" />
             </div>
         </form>
     </div>

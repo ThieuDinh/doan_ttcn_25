@@ -33,43 +33,46 @@
 
             <!-- Divider -->
             <hr class="sidebar-divider my-0">
-
-            <li class="nav-item active">
-                <a class="nav-link" asp-area="Admin" asp-controller="Dashboard" asp-action="Index">
-                    <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Tổng quan</span>
-                </a>
-            </li>
+            @if (User.IsInRole("Administrator") || User.IsInRole("Staff") || User.IsInRole("Manager"))
+            {
+                <li class="nav-item active">
+                    <a class="nav-link" asp-area="Admin" asp-controller="Dashboard" asp-action="Index">
+                        <i class="fas fa-fw fa-tachometer-alt"></i>
+                        <span>Tổng quan</span>
+                    </a>
+                </li>
+            }
 
             <hr class="sidebar-divider">
-
-            <div class="sidebar-heading">
-                Kho hàng & Sản xuất
-            </div>
-
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseProduct"
-                    aria-expanded="true" aria-controls="collapseProduct">
-                    <i class="fas fa-fw fa-box-open"></i>
-                    <span>Sản phẩm & Kho</span>
-                </a>
-                <div id="collapseProduct" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Thông tin cơ bản:</h6>
-                        <a class="collapse-item" asp-area="Admin" asp-controller="Category" asp-action="Index">Quản lý
-                            danh mục</a>
-                        <a class="collapse-item" asp-area="Admin" asp-controller="Product" asp-action="Index">Danh sách
-                            sản phẩm</a>
-
-                        <div class="collapse-divider"></div>
-                        <h6 class="collapse-header">Nghiệp vụ kho:</h6>
-                        <a class="collapse-item" asp-area="Admin" asp-controller="ProductBatch" asp-action="Index">Quản
-                            lý lô hàng</a>
-
-                    </div>
+            @if (User.IsInRole("Administrator") || User.IsInRole("Manager"))
+            {
+                <div class="sidebar-heading">
+                    Kho hàng & Sản xuất
                 </div>
-            </li>
 
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseProduct"
+                        aria-expanded="true" aria-controls="collapseProduct">
+                        <i class="fas fa-fw fa-box-open"></i>
+                        <span>Sản phẩm & Kho</span>
+                    </a>
+                    <div id="collapseProduct" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <h6 class="collapse-header">Thông tin cơ bản:</h6>
+                            <a class="collapse-item" asp-area="Admin" asp-controller="Category" asp-action="Index">Quản lý
+                                danh mục</a>
+                            <a class="collapse-item" asp-area="Admin" asp-controller="Product" asp-action="Index">Danh sách
+                                sản phẩm</a>
+
+                            <div class="collapse-divider"></div>
+                            <h6 class="collapse-header">Nghiệp vụ kho:</h6>
+                            <a class="collapse-item" asp-area="Admin" asp-controller="ProductBatch" asp-action="Index">Quản
+                                lý lô hàng</a>
+
+                        </div>
+                    </div>
+                </li>
+            }
             <hr class="sidebar-divider">
 
             <div class="sidebar-heading">
@@ -92,10 +95,13 @@
                             mới</a>
 
                         <div class="collapse-divider"></div>
-                        <h6 class="collapse-header">Bán hàng:</h6>
+                        @if (User.IsInRole("Administrator") || User.IsInRole("Manager"))
+                        {
+                            <h6 class="collapse-header">Bán hàng:</h6>
 
-                        <a class="collapse-item" asp-area="Admin" asp-controller="Voucher" asp-action="Index">Mã giảm
-                            giá</a>
+                            <a class="collapse-item" asp-area="Admin" asp-controller="Voucher" asp-action="Index">Mã giảm
+                                giá</a>
+                        }
                     </div>
                 </div>
             </li>
@@ -119,28 +125,24 @@
                         <div class="bg-white py-2 collapse-inner rounded">
                             <a class="collapse-item" asp-area="Admin" asp-controller="ManagerUser" asp-action="Index">Quản
                                 lý tài khoản</a>
-                            <a class="collapse-item" asp-area="Admin" asp-controller="ManagerUser" asp-action="Index">Lịch
-                                sử đặt hàng</a>
+
                         </div>
 
                     </div>
 
                 </li>
-
-                <li class="nav-item">
-                    <a class="nav-link" asp-area="Admin" asp-controller="Report" asp-action="Index">
-                        <i class="fas fa-fw fa-chart-line"></i>
-                        <span>Báo cáo doanh thu</span>
-                    </a>
-                </li>
+            }
+            @if (User.IsInRole("Administrator") || User.IsInRole("Manager") || User.IsInRole("Staff"))
+            {
                 <li class="nav-item">
                     <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">
                         <i class="fas fa-fw fa-home"></i>
                         <span>Trang chủ của hàng</span>
                     </a>
                 </li>
-            }
 
+
+            }
             <hr class="sidebar-divider d-none d-md-block">
 
             <div class="text-center d-none d-md-inline">
@@ -209,12 +211,15 @@
                                 <img class="img-profile rounded-circle" src="/dashboard/img/undraw_profile.svg">
                             </a>
                             <!-- Dropdown - User Information -->
-                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" <a asp-area=""
-                                asp-action="Logout" asp-controller="Account" class="dropdown-item" data-toggle="modal"
-                                data-target="#logoutModal">
-                                <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                Logout
-                                </a>
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                aria-labelledby="userDropdown">
+                                <form class="form-inline" asp-area="" asp-controller="Account" asp-action="Logout"
+                                    method="post">
+                                    <button type="submit" class="dropdown-item" style="cursor: pointer;">
+                                        <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Đăng xuất
+                                    </button>
+                                </form>
                             </div>
                         </li>
 

@@ -11,7 +11,7 @@ public class ProductCreateVM
     [Display(Name = "Danh mục")]
     public int CategoryId { get; set; }
 
-    // Ở đây dùng IFormFile trực tiếp -> Không cần ImageUrl string
+    
    
     public IFormFile? Photo { get; set; } 
 }

@@ -14,8 +14,8 @@ namespace doan_ttcn.ViewModels
 
         public string? Note { get; set; }
 
-        public decimal SubTotal { get; set; }      // Tổng tiền hàng
-        public decimal GrandTotal { get; set; }    // Tổng thanh toán cuối cùng
+        public decimal SubTotal { get; set; }      
+        public decimal GrandTotal { get; set; }   
         public decimal DiscountAmount { get; set; }
         public List<CartItemVM> CartItems { get; set; } = new List<CartItemVM>();
         public string PaymentMethod { get; set; }

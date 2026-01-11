@@ -1,17 +1,17 @@
 @model doan_ttcn.Areas.Admin.ViewModel.CategoryDeatilsVM
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Chi tiết danh mục";
 }
 
-<h1>Details</h1>
+<h1>Chi tiết danh mục</h1>
 
 <div>
-    <h4>Category</h4>
+    <h4>Danh mục </h4>
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.category.Name)
+            Tên danh mục
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.category.Name)

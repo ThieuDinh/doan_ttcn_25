@@ -1,0 +1,57 @@
+@model doan_ttcn.Models.Voucher
+
+@{
+    ViewData["Title"] = "Xóa voucher";
+}
+
+<h1>Xóa voucher</h1>
+
+<h3>Bạn có chắc chắn muốn xóa voucher này?</h3>
+<div>
+    <h4>Voucher</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+           Mã voucher
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Code)
+        </dd>
+        <dt class = "col-sm-2">
+           Phần trăm giảm
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.DiscountPecent)
+        </dd>
+        <dt class = "col-sm-2">
+           Số lượng
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Quantity)
+        </dd>
+        <dt class = "col-sm-2">
+            Giảm tối đa
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.DícountMax)
+        </dd>
+        <dt class = "col-sm-2">
+           Bắt đầu
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.StartDate)
+        </dd>
+        <dt class = "col-sm-2">
+           Kết thúc
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.EndDate)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <a asp-action="Index">Trở lại danh sách</a>
+    </form>
+</div>

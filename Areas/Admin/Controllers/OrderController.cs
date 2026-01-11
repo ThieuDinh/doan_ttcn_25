@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 namespace doan_ttcn.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize(Roles = "Administrator,Manager")]
+    [Authorize(Roles = "Administrator,Manager,Staff")]
     public class OrderController : Controller
     {
         private readonly ApplicationDbContext _context;

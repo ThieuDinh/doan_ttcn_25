@@ -1,4 +1,5 @@
 using doan_ttcn.Areas.Admin.ViewModel;
+
 using doan_ttcn.Data;
 using doan_ttcn.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -54,29 +55,27 @@ namespace Areas.Admin.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(ManagerUserVM model)
+        public async Task<IActionResult> Create(AdminCreateVM model)
         {
-            ModelState.Remove("Id");
-            ModelState.Remove("UserName");
-            ModelState.Remove("PhoneNumber");
-            ModelState.Remove("Role");
+           
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser
                 {
                     Email = model.Email,
                     UserName = model.Email,
+                    FullName=model.Email,
                     PhoneNumber = model.PhoneNumber
                 };
-                var result = await _userManager.CreateAsync(user, model.NewPassword);
+                var result = await _userManager.CreateAsync(user, model.Password);
 
                 if (result.Succeeded)
                 {
-                    if (!string.IsNullOrEmpty(model.Role))
+                    if (!string.IsNullOrEmpty(model.Roles))
                     {
-                        if (await _roleManager.RoleExistsAsync(model.Role))
+                        if (await _roleManager.RoleExistsAsync(model.Roles))
                         {
-                            await _userManager.AddToRoleAsync(user, model.Role);
+                            await _userManager.AddToRoleAsync(user, model.Roles);
                         }
                     }
                     return RedirectToAction(nameof(Index));
@@ -86,7 +85,7 @@ namespace Areas.Admin.Controllers
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
             }
-            ViewBag.Roles = new SelectList(_roleManager.Roles, "Name", "Name", model.Role);
+            ViewBag.Roles = new SelectList(_roleManager.Roles, "Name", "Name", model.Roles);
             return View(model);
         }
         public async Task<IActionResult> Edit(string? id)
@@ -192,6 +191,50 @@ namespace Areas.Admin.Controllers
 
             var orders = await _context.Orders.Where(a => a.CustomerId == user.Id).Include(a => a.OrderDetails).ToListAsync();
             return View(orders);
+        }
+        public async Task<IActionResult> Delete(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null) return NotFound();
+
+            var model = new AdminDeleteVM
+            {
+                Id = user.Id,
+                FullName = user.FullName,
+                Email = user.Email,
+                PhoneNumber = user.PhoneNumber
+            };
+
+            return View(model);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete()
+        {
+            var id = Request.Form["Id"];
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null) return NotFound();
+
+            var result = await _userManager.DeleteAsync(user);
+            if (result.Succeeded)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
+            }
+            var model = new AdminDeleteVM
+            {
+                Id = user.Id,
+                FullName = user.FullName,
+                Email = user.Email,
+                PhoneNumber = user.PhoneNumber
+            };
+            return View("Delete", model);
         }
     }
 }

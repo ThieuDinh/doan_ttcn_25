@@ -44,7 +44,6 @@ namespace doan_ttcn.Controllers
                 }
             }
 
-            // 3. Tạo ViewModel
             var model = new CheckoutVM
             {
                 CartItems = cart,
@@ -62,10 +61,10 @@ namespace doan_ttcn.Controllers
                 var user = _context.Users.Find(userId);
                 if (user != null)
                 {
-                    model.FullName = user.FullName; // Hoặc FullName nếu có
+                    model.FullName = user.FullName; 
                     model.Phone = user.PhoneNumber;
                     model.Address = user.Address;
-                    model.Phone = user.PhoneNumber;// Nếu User có trường Address
+                    model.Phone = user.PhoneNumber;
                     model.IsUserLoggedIn = true;
 
                 }
@@ -124,7 +123,6 @@ namespace doan_ttcn.Controllers
                                 {
                                     await transaction.RollbackAsync();
                                     ModelState.AddModelError("", $"Sản phẩm {item.ProductName} chỉ còn {totalStock}, không đủ hàng.");
-                                    // Setup lại dữ liệu hiển thị lỗi
                                     model.CartItems = cart;
                                     model.SubTotal = subTotal;
                                     model.GrandTotal = grandTotal;

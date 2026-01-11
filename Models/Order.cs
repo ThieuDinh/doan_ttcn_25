@@ -19,29 +19,26 @@ namespace doan_ttcn.Models
 
         // Tài chính
         [Column(TypeName = "decimal(9,0)")]
-        public decimal TotalAmount { get; set; } // Tổng tiền hàng
+        public decimal TotalAmount { get; set; } 
         [Column(TypeName = "decimal(9,0)")]
-        public decimal DiscountAmount { get; set; } // Giảm giá
+        public decimal DiscountAmount { get; set; }
         [Column(TypeName = "decimal(9,0)")]        
-        public decimal FinalAmount { get; set; } // Khách phải trả
+        public decimal FinalAmount { get; set; } 
 
-        // Trạng thái & Kênh
         [Column(TypeName = "int")]
         public OrderStatus Status { get; set; } = OrderStatus.Pending;
         [Column(TypeName = "int")]
         public OrderChannel Channel { get; set; } = OrderChannel.Website;
 
-        // Liên kết User (Khách hàng)
-
         public string? CustomerId { get; set; }
         [ForeignKey("CustomerId")]
         public ApplicationUser? Customer { get; set; }
 
-        // Danh sách sản phẩm mua
+       
         public ICollection<OrderDetail> OrderDetails { get; set; }
         public int? VoucherId { get; set; } 
 
-        // Thuộc tính điều hướng
+      
         [ForeignKey("VoucherId")]
         public Voucher? Voucher { get; set; }
         public PaymentType PaymentMethod { get; set; } = PaymentType.COD;

@@ -20,7 +20,7 @@ namespace doan_ttcn.Controllers
 
             var orders = await _context.Orders
                 .Where(o => o.CustomerId == userId)
-                .OrderByDescending(o => o.OrderDate) // Đơn mới nhất lên đầu
+                .OrderByDescending(o => o.OrderDate) 
                 .ToListAsync();
 
             return View(orders);
@@ -31,7 +31,7 @@ namespace doan_ttcn.Controllers
 
             var order = await _context.Orders
                 .Include(o => o.OrderDetails)
-                .ThenInclude(od => od.Product) // Load kèm thông tin sản phẩm
+                .ThenInclude(od => od.Product) 
                 .FirstOrDefaultAsync(o => o.Id == id && o.CustomerId == userId);
 
             if (order == null) return NotFound();
@@ -48,16 +48,16 @@ namespace doan_ttcn.Controllers
 
             if (order == null) return NotFound();
 
-            if (order.Status == OrderStatus.Pending) // Chỉ hủy được đơn mới đặt
+            if (order.Status == OrderStatus.Pending) 
             {
                 var orderDetails = await _context.OrderDetails.Where(od => od.OrderId == id).ToListAsync();
 
                 foreach (var item in orderDetails)
                 {
-                    // Tìm Batch phù hợp để trả hàng về (Ưu tiên Batch còn hạn xa nhất hoặc Batch nhập mới nhất)
+                   
                     var batch = await _context.ProductBatches
                         .Where(b => b.ProductId == item.ProductId && b.ExpireDate > DateTime.Now)
-                        .OrderByDescending(b => b.ExpireDate) // Trả vào lô có hạn xa nhất
+                        .OrderByDescending(b => b.ExpireDate) 
                         .FirstOrDefaultAsync();
 
                     if (batch != null)

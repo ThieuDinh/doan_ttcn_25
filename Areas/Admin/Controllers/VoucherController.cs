@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 namespace doan_ttcn.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize(Roles = "Administrator")]
+    [Authorize(Roles = "Administrator,Manager")]
     public class VoucherController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -67,6 +67,31 @@ namespace doan_ttcn.Areas.Admin.Controllers
                 return RedirectToAction(nameof(Index));
             }
             return View(voucher);
+        }
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null) return NotFound();
+
+            var voucher = await _context.Vouchers
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (voucher == null) return NotFound();
+
+            return View(voucher);
+        }
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var voucher = await _context.Vouchers.FindAsync(id);
+            if (voucher != null)
+            {
+                _context.Vouchers.Remove(voucher);
+                await _context.SaveChangesAsync();
+
+                return RedirectToAction(nameof(Index));
+            }
+            return RedirectToAction(nameof(Index));
         }
      }
 }
