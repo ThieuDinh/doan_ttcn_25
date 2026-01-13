@@ -165,7 +165,8 @@ public class CartController : Controller
 
         HttpContext.Session.Set(cart_key, cart);
 
-        return RedirectToAction("Index");
+        return Redirect(Request.Headers["Referer"].ToString());
+
     }
     public IActionResult Remove(int id)
     {
@@ -176,7 +177,8 @@ public class CartController : Controller
             cart.Remove(item);
             HttpContext.Session.Set(cart_key, cart);
         }
-        return RedirectToAction("Index");
+        return Redirect(Request.Headers["Referer"].ToString());
+
     }
 
    
@@ -207,6 +209,7 @@ public class CartController : Controller
                 HttpContext.Session.Set(cart_key, cart);
             }
         }
-        return RedirectToAction("Index");
+       
+        return Redirect(Request.Headers["Referer"].ToString());
     }
 }

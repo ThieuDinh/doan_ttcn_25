@@ -19,10 +19,10 @@
 </head>
 
 <body>
-    <div id="wrapper">
+    <div id="wrapper" style="color: black;">
 
         <!-- Sidebar -->
-        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+        <ul class="navbar-nav sidebar sidebar-dark accordion" style="background-color: rgb(228, 223, 176);" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
             <a asp-area="Admin" asp-controller="Dashboard" asp-action="Index"
@@ -36,7 +36,7 @@
             @if (User.IsInRole("Administrator") || User.IsInRole("Staff") || User.IsInRole("Manager"))
             {
                 <li class="nav-item active">
-                    <a class="nav-link" asp-area="Admin" asp-controller="Dashboard" asp-action="Index">
+                    <a class="nav-link" style="color: black;" asp-area="Admin" asp-controller="Dashboard" asp-action="Index">
                         <i class="fas fa-fw fa-tachometer-alt"></i>
                         <span>Tổng quan</span>
                     </a>
@@ -46,12 +46,12 @@
             <hr class="sidebar-divider">
             @if (User.IsInRole("Administrator") || User.IsInRole("Manager"))
             {
-                <div class="sidebar-heading">
+                <div class="sidebar-heading" style="color: black;">
                     Kho hàng & Sản xuất
                 </div>
 
                 <li class="nav-item">
-                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseProduct"
+                    <a class="nav-link collapsed" style="color: black;" href="#" data-toggle="collapse" data-target="#collapseProduct"
                         aria-expanded="true" aria-controls="collapseProduct">
                         <i class="fas fa-fw fa-box-open"></i>
                         <span>Sản phẩm & Kho</span>
@@ -75,12 +75,12 @@
             }
             <hr class="sidebar-divider">
 
-            <div class="sidebar-heading">
+            <div class="sidebar-heading" style="color: black;">
                 Kinh doanh
             </div>
 
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseOrder"
+                <a class="nav-link collapsed" style="color: black;" href="#" data-toggle="collapse" data-target="#collapseOrder"
                     aria-expanded="true" aria-controls="collapseOrder">
                     <i class="fas fa-fw fa-shopping-cart"></i>
                     <span>Đơn hàng</span>
@@ -110,12 +110,12 @@
 
             @if (User.IsInRole("Administrator"))
             {
-                <div class="sidebar-heading">
+                <div class="sidebar-heading" style="color: black;">
                     Hệ thống
                 </div>
 
                 <li class="nav-item">
-                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUser"
+                    <a class="nav-link collapsed" style="color: black;" href="#" data-toggle="collapse" data-target="#collapseUser"
                         aria-expanded="true" aria-controls="collapseUser">
                         <i class="fas fa-fw fa-users"></i>
                         <span>Tài khoản</span>
@@ -135,7 +135,7 @@
             @if (User.IsInRole("Administrator") || User.IsInRole("Manager") || User.IsInRole("Staff"))
             {
                 <li class="nav-item">
-                    <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">
+                    <a class="nav-link" style="color: black;" asp-area="" asp-controller="Home" asp-action="Index">
                         <i class="fas fa-fw fa-home"></i>
                         <span>Trang chủ của hàng</span>
                     </a>
@@ -160,7 +160,7 @@
             <div id="content">
 
                 <!-- Topbar -->
-                <nav class="navbar navbar-expand navbar-light bg-secondary topbar mb-4 static-top shadow">
+                <nav class="navbar navbar-expand navbar-light topbar mb-4 static-top shadow" style="background-color: rgb(31, 96, 38);">
 
                     <!-- Sidebar Toggle (Topbar) -->
                     <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
@@ -175,7 +175,7 @@
 
                         <!-- Nav Item - Search Dropdown (Visible Only XS) -->
                         <li class="nav-item dropdown no-arrow d-sm-none">
-                            <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
+                            <a class="nav-link dropdown-toggle" style="color: black;" href="#" id="searchDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-search fa-fw"></i>
                             </a>
@@ -204,7 +204,7 @@
 
                         <!-- Nav Item - User Information -->
                         <li class="nav-item dropdown no-arrow">
-                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                            <a class="nav-link dropdown-toggle" style="color: black;" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span
                                     class="mr-2 d-none d-lg-inline text-white small">@UserManager.GetUserName(User)</span>
