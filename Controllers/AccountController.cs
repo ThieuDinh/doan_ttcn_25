@@ -10,12 +10,11 @@ namespace doan_ttcn.Controllers
 {
     public class AccountController : Controller
     {
-        // 1. Khai báo các dịch vụ Identity cần dùng
+
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly RoleManager<IdentityRole> _roleManager;
 
-        // 2. Sử dụng Dependency Injection (DI) để nhận các dịch vụ
         public AccountController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
@@ -43,7 +42,6 @@ namespace doan_ttcn.Controllers
 
             if (ModelState.IsValid)
             {
-
                 var result = await _signInManager.PasswordSignInAsync(
                     model.Email,
                     model.Password,
@@ -62,7 +60,6 @@ namespace doan_ttcn.Controllers
                     {
                         return RedirectToAction("Index", "Dashboard", new { area = "Admin" });
                     }
-
                     return RedirectToAction("Index", "Home");
                 }
                 ModelState.AddModelError(string.Empty, "Đăng nhập thất bại. Vui lòng kiểm tra lại Email và Mật khẩu.");
@@ -94,7 +91,6 @@ namespace doan_ttcn.Controllers
                     PhoneNumber = ""
                 };
 
-
                 var result = await _userManager.CreateAsync(user, model.Password);
 
                 if (result.Succeeded)
@@ -106,23 +102,16 @@ namespace doan_ttcn.Controllers
                         await _roleManager.CreateAsync(new IdentityRole("Customer"));
                     }
 
-
                     await _userManager.AddToRoleAsync(user, "Customer");
-
-
-
                     await _signInManager.SignInAsync(user, isPersistent: false);
 
                     return RedirectToAction("Index", "Home");
                 }
-
-
                 foreach (var error in result.Errors)
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
             }
-
             return View(model);
         }
 
@@ -135,7 +124,6 @@ namespace doan_ttcn.Controllers
             HttpContext.Session.Clear();
             return RedirectToAction("Index", "Home");
         }
-
 
         private IActionResult RedirectToLocal(string returnUrl)
         {
@@ -183,7 +171,6 @@ namespace doan_ttcn.Controllers
                 var user = await _userManager.GetUserAsync(User);
                 if (user == null) return RedirectToAction("Login");
 
-                // Cập nhật thông tin
                 user.FullName = model.Fullname;
                 user.Address = model.Address;
                 user.PhoneNumber = model.PhoneNumber;
@@ -234,7 +221,6 @@ namespace doan_ttcn.Controllers
             ModelState.Remove("PhoneNumber");
             ModelState.Remove("UserId");
 
-
             if (model.NewPassword != model.ConfirmPassword)
             {
                 ModelState.AddModelError("ConfirmPassword", "Mật khẩu xác nhận không khớp.");
@@ -274,6 +260,5 @@ namespace doan_ttcn.Controllers
             }
             return View("ChangePassword", model);
         }
-
     }
 }
