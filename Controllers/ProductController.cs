@@ -33,6 +33,7 @@ public class ProductController : Controller
         });
         return View(result);
     }
+    
     public async Task<IActionResult> Detail(int? id)
     {
         if (id == null)
