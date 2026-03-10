@@ -1,0 +1,194 @@
+@model doan_ttcn.ViewModels.CartVM
+
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+@section Styles {
+    <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet" />
+    <style>
+        body {
+            font-family: "Roboto", sans-serif;
+            background-color: #f7f7f7;
+            color: #333;
+        }
+
+        .font-display {
+            font-family: "Work Sans", sans-serif;
+        }
+
+        .text-primary {
+            color: #4CAF50 !important;
+        }
+
+        .bg-primary {
+            background-color: #4CAF50 !important;
+        }
+
+        .btn-primary {
+            background-color: #4CAF50;
+            border-color: #4CAF50;
+        }
+
+        .btn-primary:hover {
+            background-color: #43a047;
+            border-color: #43a047;
+        }
+    </style>
+    <link rel="stylesheet" href="~/css/cart.css">
+}
+<div class="page-header text-center">
+    <h1 class="font-display font-weight-bold">Giỏ hàng</h1>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb justify-content-center bg-transparent p-0">
+            <li class="breadcrumb-item"><a asp-action="Index" asp-controller="Home" class="text-muted">Trang chủ</a>
+            </li>
+
+            <li class="breadcrumb-item active text-primary" aria-current="page">Giỏ hàng</li>
+        </ol>
+    </nav>
+</div>
+<!-- Single Page Header End -->
+
+
+<!-- Cart Page Start -->
+<div class="container-fluid py-5">
+    <div class="container py-5">
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Ảnh</th>
+                        <th scope="col">Tên sản phẩm</th>
+                        <th scope="col">Giá</th>
+                        <th scope="col">Số lượng</th>
+                        <th scope="col">Tổng</th>
+                        <th scope="col">Xóa</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Items)
+                    {
+                        <tr>
+                            <th scope="row ">
+                                <div class="d-flex align-items-center">
+                                    <img src="~/product/@item.ImageUrl" class="img-fluid me-5 rounded-circle"
+                                        style="width: 80px; height: 80px;" alt="">
+                                </div>
+                            </th>
+                            <td>
+                                <p class="mb-0 mt-4">@item.ProductName</p>
+                            </td>
+                            <td>
+                                <p class="mb-0 mt-4">@item.Price </p>
+                            </td>
+                            <td>
+                                <div class="input-group  quantity mt-4" style="width: 100px;">
+                                    <div class="input-group-btn">
+                                        <a asp-action="UpdateQuantity" asp-route-id="@item.ProductId"
+                                            asp-route-quantity="@(item.Quantity - 1)">
+                                            <button class="btn btn-sm btn-minus rounded-circle bg-light border">
+                                                <i class="fa fa-minus"></i>
+                                            </button>
+                                        </a>
+                                    </div>
+                                    <input type="text" class="form-control form-control-sm text-center border-0"
+                                        value="@item.Quantity">
+                                    <div class="input-group-btn">
+                                        <a asp-action="UpdateQuantity" asp-route-id="@item.ProductId"
+                                            asp-route-quantity="@(item.Quantity + 1)">
+                                            <button class="btn btn-sm btn-plus rounded-circle bg-light border"
+                                                type="button">
+                                                <i class="fa fa-plus"></i>
+                                            </button>
+                                        </a>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <p class="mb-0 mt-4">@item.TotalPrice</p>
+                            </td>
+                            <td>
+                                <a asp-action="Remove" asp-route-id="@item.ProductId">
+                                    <button class="btn btn-md rounded-circle bg-light border mt-4">
+                                        <i class="fa fa-times text-danger"></i>
+                                    </button>
+                                </a>
+                            </td>
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="mt-5">
+            <form asp-action="ApplyCoupon" method="post" class="d-flex align-items-center">
+                <input type="text" name="couponCode" class="border-0 border-bottom rounded me-5 py-3 mb-4"
+                    placeholder="Nhập mã giảm giá" value="@Model.AppliedCouponCode"> <button class="btn btn-cart-action"
+                    type="submit">Áp dụng</button>
+            </form>
+
+            @if (!string.IsNullOrEmpty(Model.CouponMessage))
+            {
+                <div class="mt-2 @(Model.IsValid ? "text-success" : "text-danger")">
+                    @if (Model.IsValid)
+                    {
+                        <i class="fa fa-check-circle"></i>
+                    }
+                    else
+                    {
+
+                        <i class="fa fa-exclamation-circle"></i>
+                    }
+                    @Model.CouponMessage
+                </div>
+            }
+
+            @if (Model.DiscountAmount > 0)
+            {
+                <div class="mt-2">
+                    <a asp-action="RemoveCoupon" class="text-danger text-decoration-underline"
+                        style="font-size: 0.9em;">[Hủy mã giảm giá]</a>
+                </div>
+            }
+        </div>
+        <div class="row g-4 justify-content-end">
+            <div class="col-8"></div>
+            <div class="col-sm-8 col-md-7 col-lg-6 col-xl-4">
+                <div class="bg-light rounded">
+                    <div class="p-4">
+                        <h1 class="display-6 mb-4">Cart <span class="fw-normal">Total</span></h1>
+
+                        <div class="d-flex justify-content-between mb-4">
+                            <h5 class="mb-0 me-4">Tổng tiền hàng:</h5>
+                            <p class="mb-0">@Model.SubTotal.ToString("#,##0") đ</p>
+                        </div>
+
+                        @if (Model.DiscountAmount > 0)
+                        {
+                            <div class="d-flex justify-content-between mb-4 text-success">
+                                <h5 class="mb-0 me-4">
+                                    Voucher @Model.DiscountPercent%: </h5>
+                                <p class="mb-0 fw-bold">-@Model.DiscountAmount.ToString("#,##0") đ</p>
+                            </div>
+                        }
+
+
+                    </div>
+
+                    <div class="py-4 mb-4 border-top border-bottom d-flex justify-content-between">
+                        <h5 class="mb-0 ps-4 me-4">Thành tiền</h5>
+                        <p class="mb-0 pe-4 text-primary fw-bold" style="font-size: 1.5rem;">
+                            @Model.GrandTotal.ToString("#,##0") đ
+                        </p>
+                    </div>
+
+                    <a asp-controller="Checkout" asp-action="Index" class="btn btn-cart-action mb-4 ms-4">Thanh toán</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

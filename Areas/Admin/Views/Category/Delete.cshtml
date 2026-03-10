@@ -1,0 +1,52 @@
+@model doan_ttcn.Models.Category
+
+@{
+    ViewData["Title"] = "Xóa danh mục";
+    int productCount = Model.Products?.Count ?? 0;
+}
+
+<h1>Xóa danh mục</h1>
+
+@if (productCount > 0)
+{
+    <h3>Bạn không được xóa sản phẩm này</h3>
+}
+else
+{
+    <h3>Bạn có chắc chắn muốn xóa danh mục này không?</h3>
+}
+<div>
+    <h4>Danh mục</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            Tên danh mục
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class="col-sm-2">Số sản phẩm</dt>
+        <dd class="col-sm-10">
+            @productCount
+            @if (productCount > 0)
+            {
+                <span class="text-danger font-weight-bold">(Cần xóa hết sản phẩm trước khi xóa danh mục)</span>
+            }
+        </dd>
+    </dl>
+
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        @if (productCount == 0)
+        {
+            <input type="submit" value="Delete" class="btn btn-danger" />
+            <span> | </span>
+        }
+        else
+        {
+            <button type="button" class="btn btn-secondary" disabled>Cannot Delete</button>
+            <span> | </span>
+        }
+        <a asp-action="Index">Back to List</a>
+    </form>
+</div>

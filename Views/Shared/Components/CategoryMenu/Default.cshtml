@@ -1,0 +1,14 @@
+@using doan_ttcn.ViewModels
+@model IEnumerable<MenuCategoryVM>
+
+<div class="mb-5">
+    <h3 class="font-display h5 font-weight-bold mb-3 border-bottom pb-2">Danh mục</h3>
+    <ul class="list-unstyled">
+        @foreach (var category in Model)
+        {
+            <li class="mb-2"><a asp-controller="Product" asp-action="Index" asp-route-id="@category.Id" class="text-secondary text-decoration-none hover-primary">@category.Name
+                    (@category.ProductCount)</a>
+            </li>
+        }
+    </ul>
+</div>

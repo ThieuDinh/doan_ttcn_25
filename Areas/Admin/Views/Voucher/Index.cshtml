@@ -1,0 +1,49 @@
+@model IEnumerable<doan_ttcn.Models.Voucher>
+
+@{
+    ViewData["Title"] = "Quản lý voucher";
+}
+
+<h1>Quản lý voucher</h1>
+
+<p>
+    <a asp-area="Admin" asp-controller="Voucher" asp-action="Create">Thêm mới</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Mã voucher
+            </th>
+            <th> Phần trăm giảm</th>
+            <th> Giảm tối da</th>
+             <th> Số lượng</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Code)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DiscountPecent)%
+                </td>
+
+                <td>
+                    @item.DícountMax.ToString("#,##0 đ")
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Quantity)
+                </td>
+                <td>
+                    
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

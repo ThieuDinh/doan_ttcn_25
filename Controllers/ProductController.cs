@@ -1,163 +1,138 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 using doan_ttcn.Models;
+using doan_ttcn.Data;
 
-namespace doan_ttcn.Controllers
+using doan_ttcn.ViewModels;
+using Microsoft.EntityFrameworkCore;
+
+namespace doan_ttcn.Controllers;
+
+public class ProductController : Controller
 {
-    public class ProductController : Controller
+    private readonly ApplicationDbContext _context;
+
+    public ProductController(ApplicationDbContext context)
     {
-        private readonly ApplicationDbContext _context;
+        _context = context;
+    }
 
-        public ProductController(ApplicationDbContext context)
+    public IActionResult Index(int? id)
+    {
+        var product = _context.Products.AsQueryable();
+        if (id.HasValue)
         {
-            _context = context;
+            product = product.Where(p => p.CategoryId == id.Value);
         }
-
-        // GET: Product
-        public async Task<IActionResult> Index()
+        var result = product.Select(p => new ProductVM
         {
-            var applicationDbContext = _context.Products.Include(p => p.Category);
-            return View(await applicationDbContext.ToListAsync());
-        }
+            Id = p.Id,
+            Name = p.Name,
+            ImgUrl = p.ImageUrl,
+            Price = p.Price,
+            CategoryName = p.CategoryName
+        });
+        return View(result);
+    }
 
-        // GET: Product/Details/5
-        public async Task<IActionResult> Details(int? id)
+    public async Task<IActionResult> Detail(int? id)
+    {
+        if (id == null)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var product = await _context.Products
-                .Include(p => p.Category)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (product == null)
-            {
-                return NotFound();
-            }
-
-            return View(product);
+            return NotFound();
         }
+        var reviews = await _context.Reviews
+        .Include(r => r.User)
+        .Where(r => r.ProductId == id)
+        .OrderByDescending(r => r.CreatedAt)
+        .ToListAsync();
 
-        // GET: Product/Create
-        public IActionResult Create()
+        var product = _context.Products
+            .FirstOrDefault(m => m.Id == id);
+
+        double rating = 0;
+        if (reviews.Any())
         {
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name");
-            return View();
+            rating = reviews.Average(r => r.Rating);
         }
-
-        // POST: Product/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description,Price,Stock,ImageUrl,CategoryId")] Product product)
+        if (product == null)
         {
-            if (ModelState.IsValid)
-            {
-                _context.Add(product);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", product.CategoryId);
-            return View(product);
+            return NotFound();
         }
-
-        // GET: Product/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        var result = new ProductDetailVM
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var product = await _context.Products.FindAsync(id);
-            if (product == null)
-            {
-                return NotFound();
-            }
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", product.CategoryId);
-            return View(product);
-        }
-
-        // POST: Product/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,Price,Stock,ImageUrl,CategoryId")] Product product)
+            Id = product.Id,
+            Name = product.Name,
+            ImgUrl = product.ImageUrl,
+            Price = product.Price,
+            Description = product.Description,
+            CategoryName = product.CategoryName,
+            Reviews = reviews,
+            AverageRating = rating,
+            ReviewCount = reviews.Count
+        };
+        return View(result);
+    }
+    public async Task<IActionResult> ReviewFull(int? id)
+    {
+        if (id == null)
         {
-            if (id != product.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(product);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ProductExists(product.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", product.CategoryId);
-            return View(product);
+            return NotFound();
         }
+        var reviews = await _context.Reviews
+        .Include(r => r.User)
+        .Where(r => r.ProductId == id && r.Rating >= 2)
+        .OrderByDescending(r => r.CreatedAt)
+        .ToListAsync();
+        var product = _context.Products
+           .FirstOrDefault(m => m.Id == id);
 
-        // GET: Product/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        double rating = 0;
+        if (reviews.Any())
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var product = await _context.Products
-                .Include(p => p.Category)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (product == null)
-            {
-                return NotFound();
-            }
-
-            return View(product);
+            rating = reviews.Average(r => r.Rating);
         }
-
-        // POST: Product/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        if (product == null)
         {
-            var product = await _context.Products.FindAsync(id);
-            if (product != null)
-            {
-                _context.Products.Remove(product);
-            }
-
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return NotFound();
         }
-
-        private bool ProductExists(int id)
+        var result = new ProductDetailVM
         {
-            return _context.Products.Any(e => e.Id == id);
-        }
+            Id = product.Id,
+            Name = product.Name,
+            ImgUrl = product.ImageUrl,
+            Price = product.Price,
+            Description = product.Description,
+            CategoryName = product.CategoryName,
+            Reviews = reviews,
+            AverageRating = rating,
+            ReviewCount = reviews.Count
+        };
+        return View(result);
+    }
+    [HttpGet]
+    public IActionResult Search(string? query)
+    {
+        var products = _context.Products
+            .Where(p => p.Name.Contains(query))
+            .Select(p => new ProductVM
+            {
+                Id = p.Id,
+                Name = p.Name,
+                ImgUrl = p.ImageUrl,
+                Price = p.Price,
+                CategoryName = p.CategoryName
+            })
+            .ToList();
+        ViewBag.Keyword = query;
+        return View("Index", products);
+    }
+
+
+    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+    public IActionResult Error()
+    {
+        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
 }
+

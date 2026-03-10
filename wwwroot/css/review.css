@@ -1,0 +1,42 @@
+/* Màu chủ đạo */
+:root {
+    --bs-primary: #4CAF50;
+    --star-gold: #FFB524;
+    --star-gray: #e9ecef;
+}
+
+.product-review-img {
+    max-height: 200px;
+    object-fit: contain;
+    border: 1px solid #f8f9fa;
+}
+
+/* --- Star Rating Widget --- */
+.rating-widget {
+    display: flex;
+    align-items: center;
+    background-color: #fff; /* Nền trắng */
+}
+
+.stars-container {
+    display: inline-flex;
+    cursor: pointer;
+}
+
+.star-icon {
+    font-size: 24px;
+    color: var(--star-gray); /* Màu xám mặc định */
+    margin-right: 5px;
+    transition: color 0.2s;
+}
+
+/* Màu vàng khi Active (Hover hoặc Selected) */
+.star-icon.active,
+.star-icon.selected {
+    color: var(--star-gold);
+}
+
+/* Hiệu ứng phóng to nhẹ khi hover */
+.star-icon:hover {
+    transform: scale(1.2);
+}

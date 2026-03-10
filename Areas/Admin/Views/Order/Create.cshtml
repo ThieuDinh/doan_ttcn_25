@@ -1,0 +1,115 @@
+@model doan_ttcn.ViewModels.AdminCreateOrderVM
+@using doan_ttcn.Models
+
+@{
+    ViewData["Title"] = "Tạo đơn hàng mới";
+    var productList = ViewData["Products"] as SelectList;
+}
+
+<div class="container-fluid px-4">
+    <h1 class="mt-4">Tạo đơn hàng (Tại quầy)</h1>
+    
+    <form asp-action="Create" method="post">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    <div class="card-header bg-primary text-white">
+                        Thông tin chung
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label class="form-label">Tên khách hàng</label>
+                            <input asp-for="CustomerName" class="form-control" placeholder="Để trống nếu là khách lẻ" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Số điện thoại</label>
+                            <input asp-for="CustomerPhone" class="form-control" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Hình thức thanh toán</label>
+                            <select asp-for="PaymentMethod" class="form-select" asp-items="Html.GetEnumSelectList<PaymentType>()"></select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Trạng thái đơn</label>
+                            <select asp-for="Status" class="form-select" asp-items="Html.GetEnumSelectList<OrderStatus>()"></select>
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-success w-100 py-3">
+                    <i class="fas fa-check-circle"></i> HOÀN TẤT ĐƠN HÀNG
+                </button>
+            </div>
+
+            <div class="col-md-8">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        Danh sách sản phẩm
+                        <button type="button" class="btn btn-sm btn-primary float-end" onclick="addItem()">
+                            <i class="fas fa-plus"></i> Thêm dòng
+                        </button>
+                    </div>
+                    <div class="card-body p-0">
+                        <table class="table table-bordered mb-0" id="tblItems">
+                            <thead class="bg-light">
+                                <tr>
+                                    <th width="60%">Sản phẩm</th>
+                                    <th width="20%">Số lượng</th>
+                                    <th width="10%">Xóa</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <select name="ProductIds" class="form-select select-product">
+                                            @foreach (var item in productList)
+                                            {
+                                                <option value="@item.Value">@item.Text</option>
+                                            }
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <input type="number" name="Quantities" class="form-control" value="1" min="1" />
+                                    </td>
+                                    <td class="text-center">
+                                        <button type="button" class="btn btn-danger btn-sm" onclick="removeItem(this)">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <script>
+        // Hàm thêm dòng mới
+        function addItem() {
+            var table = document.getElementById("tblItems").getElementsByTagName('tbody')[0];
+            var newRow = table.rows[0].cloneNode(true); // Copy dòng đầu tiên
+            
+            // Reset giá trị về mặc định
+            var inputs = newRow.getElementsByTagName('input');
+            for(var i=0; i<inputs.length; i++) { inputs[i].value = "1"; }
+            
+            table.appendChild(newRow);
+        }
+
+        // Hàm xóa dòng
+        function removeItem(btn) {
+            var row = btn.parentNode.parentNode;
+            var table = document.getElementById("tblItems").getElementsByTagName('tbody')[0];
+            
+            // Không cho xóa nếu chỉ còn 1 dòng
+            if (table.rows.length > 1) {
+                table.removeChild(row);
+            } else {
+                alert("Phải có ít nhất 1 sản phẩm!");
+            }
+        }
+    </script>
+}

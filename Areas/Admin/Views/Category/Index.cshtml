@@ -1,0 +1,41 @@
+@model IEnumerable<doan_ttcn.Models.Category>
+
+@{
+    ViewData["Title"] = "Quản lý danh mục";
+     
+    
+}
+
+<h1>Quản lý danh mục</h1>
+
+<p>
+    <a asp-area="Admin" asp-controller="Category" asp-action="Create">Thêm mới</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Tên danh mục
+            </th>
+            <th>Số lượng</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+               @item.Products.Count()
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

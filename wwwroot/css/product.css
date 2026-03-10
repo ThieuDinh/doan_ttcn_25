@@ -1,0 +1,90 @@
+/* --- XÓA CÁC ĐOẠN BODY, FONT-DISPLAY, TEXT-PRIMARY, NAVBAR CŨ ĐI --- */
+/* Chỉ giữ lại những thứ liên quan đến Card sản phẩm và Grid */
+
+/* Product Card Hover Effect - Giữ nguyên hiệu ứng card */
+.product-card {
+  transition: all 0.3s ease;
+  border: 1px solid #e9ecef;
+  background: white;
+  position: relative; /* Thêm để định vị overlay */
+  overflow: hidden;
+}
+
+.product-card:hover {
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+  transform: translateY(-5px);
+}
+
+.product-img-wrapper {
+  position: relative;
+  overflow: hidden;
+}
+
+.product-img-wrapper img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+}
+
+/* Overlay khi di chuột vào ảnh */
+.hover-overlay {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.product-card:hover .hover-overlay {
+  opacity: 1;
+}
+
+/* Nút thêm vào giỏ hàng - Custom riêng không đụng hàng với btn-primary của Layout */
+.add-to-cart-btn {
+  transform: translateY(20px);
+  transition: transform 0.3s;
+  opacity: 0;
+  /* Nếu bạn muốn giữ màu xanh lá riêng cho nút này thì định nghĩa ở đây */
+  background-color: #4CAF50; 
+  border-color: #4CAF50;
+  color: white;
+}
+
+.add-to-cart-btn:hover {
+  background-color: #43a047;
+  border-color: #43a047;
+  color: white;
+}
+
+.product-card:hover .add-to-cart-btn {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* Sidebar Range Slider */
+.custom-range {
+  width: 100%;
+}
+
+/* Small List Items (Bên Sidebar) */
+.small-product-img {
+  width: 64px;
+  height: 64px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+/* Pagination - Điều chỉnh lại để ăn theo màu của Layout chính */
+.page-link {
+  color: #333;
+}
+
+/* Nếu muốn active pagination theo màu xanh lá cũ thì giữ, không thì xóa để ăn theo style.css */
+.page-item.active .page-link {
+  background-color: #4CAF50;
+  border-color: #4CAF50;
+  color: white;
+}

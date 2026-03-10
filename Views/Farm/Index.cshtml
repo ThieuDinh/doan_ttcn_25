@@ -1,0 +1,57 @@
+@{
+    ViewData["Title"] = "Farm Đối Tác";
+}
+
+<link rel="stylesheet" href="~/css/farm.css" />
+
+<div class="container-farm">
+    <div class="row">
+
+        <!-- CỘT TRÁI 30% -->
+        <div class="col-md-3 farm-menu">
+            <h5 class="mb-3">Farm Đối Tác</h5>
+
+            <ul class="farm-list">
+                <li data-farm="caudat" onclick="loadFarm('caudat', this)">Farm Cầu Đất</li>
+                <li data-farm="truongphuc" onclick="loadFarm('truongphuc', this)">Trường Phúc Farm</li>
+                <li data-farm="traimat" onclick="loadFarm('traimat', this)">Trại Mát Farm</li>
+                <li data-farm="lartis" onclick="loadFarm('lartis', this)">LArti’s Farm</li>
+            </ul>
+        </div>
+
+        <!-- CỘT PHẢI 70% -->
+        <div class="col-md-9 farm-content" id="farmContent">
+            @await Html.PartialAsync("CauDatfarm") <!-- mặc định -->
+        </div>
+
+    </div>
+</div>
+
+<script>
+    function loadFarm(farm, el) {
+
+        // Bỏ active tất cả
+        document.querySelectorAll('.farm-list li')
+            .forEach(li => li.classList.remove('active'));
+
+        // Active item được click
+        if (el) {
+            el.classList.add('active');
+        }
+
+        fetch(`/Farm/LoadFarm?farm=${farm}`)
+            .then(res => res.text())
+            .then(html => {
+                document.getElementById("farmContent").innerHTML = html;
+            });
+    }
+
+    // 👉 LOAD MẶC ĐỊNH FARM CẦU ĐẤT KHI VỪA VÀO TRANG
+    document.addEventListener("DOMContentLoaded", function () {
+        const defaultFarm = document.querySelector('.farm-list li[data-farm="caudat"]');
+        if (defaultFarm) {
+            defaultFarm.classList.add('active');
+        }
+    });
+</script>
+

@@ -1,0 +1,76 @@
+@model IEnumerable<doan_ttcn.Models.Product>
+
+@{
+    ViewData["Title"] = "Quản lý sản phẩm";
+}
+
+<h1>Quản lý sản phẩm</h1>
+
+<p>
+    <a asp-action="Create">Thêm mới</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Ảnh </th>
+            
+            <th>
+                Tên sản phẩm
+            </th>
+
+            <th>
+                Giá
+            </th>
+
+          
+            <th>
+                Danh mục
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @if (!string.IsNullOrEmpty(item.ImageUrl))
+                    {
+                        <img src="~/product/@item.ImageUrl" alt="@item.Name"
+                            style="width: 80px; height: 80px; object-fit: cover; border-radius: 5px;" />
+                    }
+                    else
+                    {
+                        <span class="text-muted">Không có ảnh</span>
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+
+                <td>
+                    @item.Price.ToString("#,##0 đ")
+                </td>
+
+               
+                <td>
+                    @Html.DisplayFor(modelItem => item.Category.Name)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> |
+                     @if (item.IsActive)
+                    {
+                        <a asp-action="Disabled" asp-route-id="@item.Id">Disable</a>
+                    }
+                    else
+                    {
+                        <a asp-action="Enabled" asp-route-id="@item.Id">Enable</a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

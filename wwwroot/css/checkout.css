@@ -1,0 +1,114 @@
+/* --- 1. Variables & Global Colors --- */
+:root {
+    --bs-primary: #4CAF50; /* Xanh lá Agropro */
+    --bs-secondary: #FFB524; /* Vàng cam điểm nhấn */
+    --bs-light: #F4F6F8;
+    --bs-dark: #45595b;
+    --bs-white: #ffffff;
+}
+
+body {
+    font-family: "Open Sans", sans-serif;
+    color: #747d88;
+}
+
+/* Font cho các tiêu đề (h1, h2, labels...) */
+h1, h2, h3, h4, h5, h6, .font-display {
+    font-family: "Work Sans", sans-serif;
+    font-weight: 600;
+    color: var(--bs-dark);
+}
+
+/* --- 2. Buttons (Nút Place Order) --- */
+.btn {
+    font-weight: 600;
+    transition: .5s;
+}
+
+/* Style cho nút viền vàng, chữ xanh */
+.btn.border-secondary {
+    border-color: var(--bs-secondary) !important;
+    color: var(--bs-primary);
+    background-color: transparent;
+}
+
+.btn.border-secondary:hover {
+    background: var(--bs-secondary) !important;
+    color: var(--bs-white) !important;
+}
+
+.text-primary {
+    color: var(--bs-primary) !important;
+}
+
+/* --- 3. Forms & Inputs --- */
+.form-control {
+    background-color: transparent;
+    border-color: #ced4da; /* Màu viền mặc định */
+    padding: 10px 15px;
+    border-radius: 10px; /* Bo tròn nhẹ giống template */
+}
+
+.form-control:focus {
+    box-shadow: none;
+    border-color: var(--bs-primary);
+}
+
+.form-label {
+    font-weight: 500;
+    color: #747d88;
+}
+
+/* Dấu sao đỏ bắt buộc */
+.form-label sup {
+    color: red;
+    font-size: 12px;
+}
+
+/* Checkboxes (Payment methods) */
+.form-check-input {
+    cursor: pointer;
+}
+
+/* Màu nền khi checkbox được chọn (class bg-primary trong HTML) */
+.form-check-input:checked {
+    background-color: var(--bs-primary);
+    border-color: var(--bs-primary);
+}
+
+.form-check-label {
+    cursor: pointer;
+    color: var(--bs-dark);
+}
+
+/* --- 4. Order Table (Bảng đơn hàng) --- */
+.table-responsive {
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.table thead th {
+    border-bottom: 2px solid #dee2e6;
+    color: var(--bs-dark);
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.table tbody tr td, 
+.table tbody tr th {
+    vertical-align: middle;
+    color: #747d88;
+    border-bottom: 1px solid #dee2e6;
+}
+
+/* Ảnh sản phẩm tròn trong bảng */
+.table img.rounded-circle {
+    object-fit: cover;
+    border: 1px solid #dee2e6;
+}
+
+/* Text đậm trong bảng (Total, Subtotal) */
+.text-dark {
+    color: var(--bs-dark) !important;
+    font-weight: 600;
+}

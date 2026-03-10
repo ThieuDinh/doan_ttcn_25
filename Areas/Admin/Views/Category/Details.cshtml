@@ -1,0 +1,66 @@
+@model doan_ttcn.Areas.Admin.ViewModel.CategoryDeatilsVM
+
+@{
+    ViewData["Title"] = "Chi tiết danh mục";
+}
+
+<h1>Chi tiết danh mục</h1>
+
+<div>
+    <h4>Danh mục </h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            Tên danh mục
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.category.Name)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.category.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
+<h3 class="mt-4">Danh sách sản phẩm thuộc danh mục</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Ảnh </th>
+
+            <th>
+                Tên
+            </th>
+
+            <th>
+                Giá
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.products)
+        {
+            <tr>
+                <td>
+                    @if (!string.IsNullOrEmpty(item.ImageUrl))
+                    {
+                        <img src="~/product/@item.ImageUrl" alt="@item.Name"
+                            style="width: 80px; height: 80px; object-fit: cover; border-radius: 5px;" />
+                    }
+                    else
+                    {
+                        <span class="text-muted">No image</span>
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+
+                <td>
+                    @item.Price.ToString("#,##0 đ")
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

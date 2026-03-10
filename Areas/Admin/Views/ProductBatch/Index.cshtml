@@ -1,0 +1,55 @@
+@model IEnumerable<doan_ttcn.Models.Product>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Hình ảnh</th>
+            <th>
+                Tên sản phẩm
+            </th>
+            <th>Danh mục</th>
+            <th>Giá bán</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+
+            <tr>
+                <td>
+                    @if (!string.IsNullOrEmpty(item.ImageUrl))
+                    {
+                        <img src="~/product/@item.ImageUrl"
+                            style="width: 60px; height: 60px; object-fit: cover; border-radius: 4px;" />
+                    }
+
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Category.Name)
+                </td>
+                <td>
+                    @item.Price.ToString("#,##0") đ
+                </td>
+
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary btn-sm">
+                        <i class="fa fa-boxes"></i> Chi tiết
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,62 @@
+@model IEnumerable<doan_ttcn.Models.Order>
+
+@{
+    ViewData["Title"] = "Quản lý đơn hàng";
+}
+
+<h1>Quản lý đơn hàng</h1>
+
+<p>
+    <a asp-action="Create">Tạo đơn</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+              Mã đơn hàng </th>
+
+            <th>
+               Tổng tiền 
+            </th>
+
+            <th>
+                Kênh bán hàng
+            </th>
+
+
+            <th>
+                Phương thức thanh toán
+            </th>
+            <th>
+                Trạng thái
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @item.FinalAmount.ToString("#,##0 đ")
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Channel)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PaymentMethod)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> |
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
