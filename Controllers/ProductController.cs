@@ -2,8 +2,9 @@ using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using doan_ttcn.Models;
 using doan_ttcn.Data;
-using Microsoft.EntityFrameworkCore;
+
 using doan_ttcn.ViewModels;
+using Microsoft.EntityFrameworkCore;
 
 namespace doan_ttcn.Controllers;
 
@@ -33,7 +34,7 @@ public class ProductController : Controller
         });
         return View(result);
     }
-    
+
     public async Task<IActionResult> Detail(int? id)
     {
         if (id == null)
@@ -72,6 +73,44 @@ public class ProductController : Controller
         };
         return View(result);
     }
+    public async Task<IActionResult> ReviewFull(int? id)
+    {
+        if (id == null)
+        {
+            return NotFound();
+        }
+        var reviews = await _context.Reviews
+        .Include(r => r.User)
+        .Where(r => r.ProductId == id && r.Rating >= 2)
+        .OrderByDescending(r => r.CreatedAt)
+        .ToListAsync();
+        var product = _context.Products
+           .FirstOrDefault(m => m.Id == id);
+
+        double rating = 0;
+        if (reviews.Any())
+        {
+            rating = reviews.Average(r => r.Rating);
+        }
+        if (product == null)
+        {
+            return NotFound();
+        }
+        var result = new ProductDetailVM
+        {
+            Id = product.Id,
+            Name = product.Name,
+            ImgUrl = product.ImageUrl,
+            Price = product.Price,
+            Description = product.Description,
+            CategoryName = product.CategoryName,
+            Reviews = reviews,
+            AverageRating = rating,
+            ReviewCount = reviews.Count
+        };
+        return View(result);
+    }
+    [HttpGet]
     public IActionResult Search(string? query)
     {
         var products = _context.Products
@@ -85,16 +124,15 @@ public class ProductController : Controller
                 CategoryName = p.CategoryName
             })
             .ToList();
-
+        ViewBag.Keyword = query;
         return View("Index", products);
     }
 
-    
+
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
-
 }
 

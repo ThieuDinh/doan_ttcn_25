@@ -2,10 +2,10 @@ using doan_ttcn.Models;
 using doan_ttcn.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
+
 using System.Threading.Tasks;
 
-// Đảm bảo namespace này khớp với thư mục Controllers của bạn
+
 namespace doan_ttcn.Controllers
 {
     public class AccountController : Controller

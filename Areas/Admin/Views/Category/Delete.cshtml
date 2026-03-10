@@ -7,7 +7,14 @@
 
 <h1>Xóa danh mục</h1>
 
-<h3>Bạn có chắc chắn muốn xóa danh mục này không?</h3>
+@if (productCount > 0)
+{
+    <h3>Bạn không được xóa sản phẩm này</h3>
+}
+else
+{
+    <h3>Bạn có chắc chắn muốn xóa danh mục này không?</h3>
+}
 <div>
     <h4>Danh mục</h4>
     <hr />

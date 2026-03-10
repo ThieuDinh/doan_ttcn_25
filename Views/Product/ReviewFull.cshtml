@@ -1,0 +1,38 @@
+@model doan_ttcn.ViewModels.ProductDetailVM
+<div >
+    @if (Model.Reviews != null && Model.Reviews.Any())
+    {
+        @foreach (var review in Model.Reviews)
+        {
+            <div class="media mb-4 border-bottom pb-3">
+
+
+                <div class="media-body">
+                    <div class="d-flex justify-content-between">
+                        <h5 class="mt-0 font-weight-bold">
+                            @(review.User?.FullName ?? "Người dùng ẩn danh")
+                        </h5>
+
+                        <div class="star-rating text-warning">
+                            @for (int i = 1; i <= 5; i++)
+                            {
+                                if (i <= review.Rating)
+                                {
+                                    <i class="fa fa-star"></i>
+                                }
+                                else
+                                {
+                                    <i class="fa fa-star-o text-muted"></i>
+                                }
+                            }
+                        </div>
+                    </div>
+
+                    <p class="text-muted small">@review.CreatedAt.ToString("dd/MM/yyyy HH:mm")</p>
+                    <p>@review.Content</p>
+                </div>
+            </div>
+        }
+    }
+
+</div>

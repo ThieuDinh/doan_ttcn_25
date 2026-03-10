@@ -1,0 +1,66 @@
+Where: Lọc.
+
+Select: Chọn cột/Đổi hình dạng.
+
+Include: Kèm bảng phụ.
+
+OrderBy: Sắp xếp.
+
+ToList: Chạy ngay đi (Lấy dữ liệu về).
+
+Nhóm Lọc (Filter)
+Where(x => x.DieuKien): Lấy ra nhiều phần tử thỏa mãn điều kiện.
+
+Ví dụ: Tìm sản phẩm giá trên 100k.
+
+_context.Products.Where(p => p.Price > 100000)
+
+FirstOrDefault(x => x.DieuKien): Lấy ra duy nhất 1 phần tử đầu tiên tìm thấy. Nếu không có trả về null.
+
+Ví dụ: Tìm chi tiết sản phẩm theo ID.
+
+_context.Products.FirstOrDefault(p => p.Id == 1)
+
+Any(x => x.DieuKien): Kiểm tra xem có tồn tại phần tử nào không? Trả về true/false (Rất nhanh).
+
+Ví dụ: Kiểm tra xem tên đăng nhập đã tồn tại chưa.
+
+Count(): Đếm số lượng.
+
+Sum(x => x.CotSo): Tính tổng.
+
+Max() / Min(): Tìm lớn nhất/nhỏ nhất.
+
+Average(): Tính trung bình.
+
+5. Cách đọc biểu thức Lambda (=>)
+Khi thấy p => p.Price > 0, bạn đọc là:
+
+p: Với mỗi sản phẩm (đại diện cho 1 dòng trong bảng).
+
+=>: Mà... (suy ra).
+
+p.Price > 0: Có giá lớn hơn 0.
+
+Nhóm Sắp xếp (Sort)
+OrderBy(x => x.Cot): Tăng dần (A -> Z, 0 -> 9).
+
+OrderByDescending(x => x.Cot): Giảm dần (Z -> A, 9 -> 0).
+
+ThenBy / ThenByDescending: Sắp xếp tiêu chí phụ (Ví dụ: Sắp xếp theo Tên, nếu trùng tên thì sắp xếp theo Giá).
+
+Khi viết LINQ, hãy tuân theo thứ tự "thần thánh" này để không bao giờ sai:
+
+_context.Bang (Nguồn)
+
+.Include(...) (Gom thêm bảng phụ - có thể đảo với Where)
+
+.Where(...) (Lọc rác - quan trọng nhất)
+
+.OrderBy(...) (Sắp xếp)
+
+.Select(...) (Chỉ lấy cột cần thiết - nếu cần tối ưu)
+
+.Skip(...).Take(...) (Phân trang, cắt lấy số lượng)
+
+.ToList() (Chốt đơn - Thực thi lấy dữ liệu)

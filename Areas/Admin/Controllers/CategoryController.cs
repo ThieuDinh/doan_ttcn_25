@@ -26,7 +26,9 @@ namespace doan_ttcn.Controllers
         // GET: Category
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Categories.ToListAsync());
+            var categories = _context.Categories.Include(c => c.Products).ToListAsync();
+            return View(await categories);
+          
         }
 
         // GET: Category/Details/5
@@ -47,7 +49,7 @@ namespace doan_ttcn.Controllers
             var product = await _context.Products.Where(a => a.CategoryId == category.Id).ToListAsync();
             var categoryDetailsVM = new CategoryDeatilsVM
             {
-                category =  category,
+                category = category,
                 products = product
             };
             return View(categoryDetailsVM);
